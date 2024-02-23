@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    android:visibility="visible"
     tools:context=".RegisterActivity">
 
     <TextView
@@ -134,16 +133,4 @@
         app:layout_constraintEnd_toEndOf="@+id/RegisterButton"
         app:layout_constraintStart_toStartOf="@+id/RegisterButton"
         app:layout_constraintTop_toBottomOf="@+id/RegisterButton" />
-
-    <TextView
-        android:id="@+id/GoToStepsTEMP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go To Steps"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AlrdHaveAccountText"
-        app:layout_constraintVertical_bias="0.7" />
 </androidx.constraintlayout.widget.ConstraintLayout>
