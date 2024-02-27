@@ -12,13 +12,13 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        val AlrdHaveAccountText = findViewById<TextView>(R.id.AlrdHaveAccountText)
-        AlrdHaveAccountText.setOnClickListener {
+        val loginButton = findViewById<TextView>(R.id.LoginButton)
+        loginButton.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
-        val RegisterButton = findViewById<Button>(R.id.RegisterButton)
-        RegisterButton.setOnClickListener {
+        val registerButton = findViewById<Button>(R.id.RegisterButton)
+        registerButton.setOnClickListener {
             // Display a toast message
             Toast.makeText(this, "Sw kolega, but not implimented", Toast.LENGTH_SHORT).show()
         }
