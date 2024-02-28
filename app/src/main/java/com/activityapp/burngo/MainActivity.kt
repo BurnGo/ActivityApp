@@ -22,10 +22,8 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.os.PersistableBundle
 import android.util.Log
 import android.widget.TextView
-import com.activityapp.burngo.R
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
