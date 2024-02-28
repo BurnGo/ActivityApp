@@ -16,7 +16,7 @@ class RegisterActivity : AppCompatActivity() {
 
         val btn: TextView = findViewById(R.id.tempGoToMain)
         btn.setOnClickListener {
-            startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
+            startActivity(Intent(this@RegisterActivity, StartPageActivity::class.java))
         }
 
         val loginButton = findViewById<TextView>(R.id.LoginButton)
