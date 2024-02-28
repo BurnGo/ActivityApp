@@ -18,16 +18,31 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
+import android.os.PersistableBundle
+import android.util.Log
+import android.widget.TextView
+import com.activityapp.burngo.R
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.mikhaellopez.circularprogressbar.CircularProgressBar
 
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback {
+class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListener {
+
 
     private lateinit var locationManager: LocationManager
     private lateinit var googleMap: GoogleMap
-
     private val LOCATION_PERMISSION_REQUEST_CODE = 1001
     private val DEFAULT_ZOOM = 15f
+
+    private var sensorManager: SensorManager? = null
+    private var running = false
+    private var totalSteps = 0f
+    private var previousTotalSteps = 0f
 
     private val pointsOfInterest = listOf(
         PointOfInterest("KTU Miestelis", LatLng(54.904041, 23.957961)),
@@ -35,17 +50,29 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         // Add more points of interest as needed
     )
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
 
+        //Step calculations
+        loadData()
+        resetSteps()
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    }
+
+    override fun onResume() {
+        super.onResume()
+        running = true
+        val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+        if (stepSensor == null) {
+            Toast.makeText(this, "No sensor detected on this device", Toast.LENGTH_SHORT).show()
+        } else {
+            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
+        }
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -59,8 +86,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Get the vector drawable resource
         val vectorDrawable = ContextCompat.getDrawable(this, R.drawable.users_location_icon)
-
-
         // Convert the vector drawable to a bitmap
         val bitmap = Bitmap.createBitmap(vectorDrawable!!.intrinsicWidth,
             vectorDrawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
@@ -87,10 +112,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     )
                 }
             }
-
             override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
         }
-
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, locationListener)
     }
 
@@ -103,6 +126,51 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 recreate()
             }
         }
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (running){
+            totalSteps = event!!.values[0]
+            val currentSteps = totalSteps.toInt() - previousTotalSteps.toInt()
+            val topTextProgress = findViewById<TextView>(R.id.top_text_progress)
+            topTextProgress.text = ("$currentSteps")
+
+            val progressBar = findViewById<CircularProgressBar>(R.id.circular_progress)
+            progressBar.apply {
+                setProgressWithAnimation(currentSteps.toFloat())
+            }
+
+        }
+    }
+    private fun resetSteps() {
+        val topTextProgress = findViewById<TextView>(R.id.top_text_progress)
+        topTextProgress.setOnClickListener {
+            Toast.makeText(this, "Long tap to reset steps", Toast.LENGTH_SHORT).show()
+        }
+        topTextProgress.setOnClickListener {
+            previousTotalSteps = totalSteps
+            topTextProgress.text = 0.toString()
+            saveData()
+
+            true
+        }
+    }
+
+    private fun saveData() {
+        val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putFloat("key1", previousTotalSteps)
+        editor.apply()
+    }
+    private fun loadData() {
+        val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+        val savedNumber = sharedPreferences.getFloat("key1", 0f)
+        Log.d("MainActivity", "$savedNumber")
+        previousTotalSteps = savedNumber
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        TODO("Not yet implemented")
     }
 
 }
