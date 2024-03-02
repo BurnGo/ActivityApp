@@ -26,6 +26,7 @@ import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.google.android.gms.maps.model.Marker
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
 
 
@@ -36,6 +37,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private lateinit var googleMap: GoogleMap
     private val LOCATION_PERMISSION_REQUEST_CODE = 1001
     private val DEFAULT_ZOOM = 15f
+
+    private var userMarker: Marker? = null
 
     private var sensorManager: SensorManager? = null
     private var running = false
@@ -94,12 +97,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         val locationListener = object : LocationListener {
             override fun onLocationChanged(location: Location) {
                 val currentLatLng = LatLng(location.latitude, location.longitude)
+                userMarker?.remove()
                 val markerOptions = MarkerOptions()
                     .position(currentLatLng)
                     .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
-                googleMap.addMarker(markerOptions)
+                userMarker = googleMap.addMarker(markerOptions)
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, DEFAULT_ZOOM))
-                locationManager.removeUpdates(this)
 
                 // Add markers for points of interest
                 pointsOfInterest.forEach { poi ->
@@ -111,8 +114,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
                 }
             }
             override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+            override fun onProviderEnabled(provider: String) {}
+            override fun onProviderDisabled(provider: String) {}
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, locationListener)
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10f, locationListener)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
