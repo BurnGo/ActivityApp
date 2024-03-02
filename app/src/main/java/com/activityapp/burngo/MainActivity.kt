@@ -47,6 +47,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private var totalSteps = 0f
     private var previousTotalSteps = 0f
 
+    private val STEP_THRESHOLD = 5f // Adjust as needed
+    private var lastAcceleration = 0f
+
     private val pointsOfInterest = listOf(
         PointOfInterest("KTU Miestelis", LatLng(54.904041, 23.957961)),
         PointOfInterest("Triju Mergeliu tiltas", LatLng(54.896881, 23.969057))
@@ -78,17 +81,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
             // Update UI with the new step count
             updateStepCountUI(totalSteps.toInt())
         }
+
+        val accelerometerSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        if (accelerometerSensor == null) {
+            Toast.makeText(this, "No accelerometer sensor detected on this device", Toast.LENGTH_SHORT).show()
+        } else {
+            sensorManager?.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_UI)
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        running = true
-        val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-        if (stepSensor == null) {
-            Toast.makeText(this, "No sensor detected on this device", Toast.LENGTH_SHORT).show()
-        } else {
-            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
-        }
+
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -147,18 +151,24 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-        if (running){
-            totalSteps = event!!.values[0]
-            val currentSteps = totalSteps.toInt() - previousTotalSteps.toInt()
-            val topTextProgress = findViewById<TextView>(R.id.top_text_progress)
-            topTextProgress.text = ("$currentSteps")
+        if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
+            val acceleration = calculateMagnitude(event.values)
+            val delta = acceleration - lastAcceleration
+            lastAcceleration = acceleration
 
-            val progressBar = findViewById<CircularProgressBar>(R.id.circular_progress)
-            progressBar.apply {
-                setProgressWithAnimation(currentSteps.toFloat())
+
+            if (delta > STEP_THRESHOLD) {
+                // A step is detected
+                totalSteps++
+                Log.d("Steps", "Steps added")
+
+                updateStepCountUI(totalSteps.toInt())
             }
-
         }
+    }
+    private fun calculateMagnitude(values: FloatArray): Float {
+        // Calculate the magnitude of acceleration
+        return Math.sqrt((values[0] * values[0] + values[1] * values[1] + values[2] * values[2]).toDouble()).toFloat()
     }
     private fun updateStepCountUI(stepCount: Int) {
         // Update the UI with the current step count
@@ -195,7 +205,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        TODO("Not yet implemented")
+        Log.d("SensorAccuracy", "Sensor accuracy changed: $accuracy")
     }
 
 }
