@@ -23,6 +23,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private val DEFAULT_ZOOM = 15f
 
     private var userMarker: Marker? = null
+    private lateinit var progressBar: CircularProgressBar
 
     private var sensorManager: SensorManager? = null
     private var running = false
@@ -58,11 +60,24 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         mapFragment.getMapAsync(this)
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
+        //Progress bar settings
+        progressBar = findViewById(R.id.circular_progress)
+        progressBar.apply { progressMax=8000f }
 
         //Step calculations
         loadData()
         resetSteps()
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+
+        //this is temporary to test progress bar
+        val simulateButton = findViewById<Button>(R.id.simulate_button)
+        simulateButton.setOnClickListener {
+            // Increment the totalSteps variable to simulate steps taken
+            totalSteps += 10f // Increment by 10 steps (adjust as needed)
+
+            // Update UI with the new step count
+            updateStepCountUI(totalSteps.toInt())
+        }
     }
 
     override fun onResume() {
@@ -144,6 +159,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
             }
 
         }
+    }
+    private fun updateStepCountUI(stepCount: Int) {
+        // Update the UI with the current step count
+        val topTextProgress = findViewById<TextView>(R.id.top_text_progress)
+        topTextProgress.text = stepCount.toString()
+
+        progressBar.setProgressWithAnimation(stepCount.toFloat())
     }
     private fun resetSteps() {
         val topTextProgress = findViewById<TextView>(R.id.top_text_progress)

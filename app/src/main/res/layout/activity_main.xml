@@ -28,6 +28,7 @@
         android:layout_width="125dp"
         android:layout_height="125dp"
         app:cpb_background_progressbar_color="@color/white"
+        app:cpb_progressbar_color="@color/white"
         app:cpb_progressbar_width="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,6 +60,17 @@
         app:layout_constraintStart_toStartOf="@+id/circular_progress"
         app:layout_constraintTop_toBottomOf="@+id/top_text_progress"
         app:layout_constraintVertical_bias="0.19999999" />
+
+    <Button
+        android:id="@+id/simulate_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Steps"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.050000012" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
