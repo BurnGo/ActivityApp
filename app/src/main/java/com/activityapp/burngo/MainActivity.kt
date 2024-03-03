@@ -29,6 +29,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.Marker
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
+import kotlin.math.sqrt
 
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListener {
@@ -43,7 +44,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private lateinit var progressBar: CircularProgressBar
 
     private var sensorManager: SensorManager? = null
-    private var running = false
     private var totalSteps = 0f
     private var previousTotalSteps = 0f
 
@@ -88,11 +88,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         } else {
             sensorManager?.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_UI)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -156,20 +151,20 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
             val delta = acceleration - lastAcceleration
             lastAcceleration = acceleration
 
-
             if (delta > STEP_THRESHOLD) {
                 // A step is detected
                 totalSteps++
                 Log.d("Steps", "Steps added")
-
                 updateStepCountUI(totalSteps.toInt())
             }
         }
     }
+    //helper function for step counting
     private fun calculateMagnitude(values: FloatArray): Float {
         // Calculate the magnitude of acceleration
-        return Math.sqrt((values[0] * values[0] + values[1] * values[1] + values[2] * values[2]).toDouble()).toFloat()
+        return sqrt((values[0] * values[0] + values[1] * values[1] + values[2] * values[2]).toDouble()).toFloat()
     }
+
     private fun updateStepCountUI(stepCount: Int) {
         // Update the UI with the current step count
         val topTextProgress = findViewById<TextView>(R.id.top_text_progress)
