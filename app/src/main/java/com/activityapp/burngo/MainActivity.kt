@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -27,6 +28,8 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.google.android.gms.maps.model.Circle
+import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.Marker
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import kotlin.math.*
@@ -44,12 +47,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private val DEFAULT_ZOOM = 15f
     private var userMarker: Marker? = null
     private lateinit var bitmap: Bitmap
+    private val markerList = mutableListOf<Marker>()
 
     private val rewards = mutableListOf<Reward>()
     private val MAX_DAILY_REWARDS = 5
     private val REWARD_MAXIMUM_RADIUS_METERS = 2000
     private val REWARD_MINIMUM_RADIUS_METERS = 300
-    private val REWARD_PICKUP_DISTANCE = 20 // in meters
+    private val REWARD_PICKUP_DISTANCE = 30 // in meters
 
     private var sensorManager: SensorManager? = null
     private var totalSteps = 0f
@@ -129,25 +133,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
                     .title(poi.name)
             )
         }
-    }
-
-    private fun addMarkerWithCustomIcon(location: Location, iconResourceId: Int, width: Int, height: Int) {
-        val currentLatLng = LatLng(location.latitude, location.longitude)
-
-        // Get the vector drawable resource and convert it to a bitmap
-        val vectorDrawable = ContextCompat.getDrawable(this, iconResourceId)
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        vectorDrawable?.setBounds(0, 0, canvas.width, canvas.height)
-        vectorDrawable?.draw(canvas)
-
-        // Create marker options with the custom icon
-        val markerOptions = MarkerOptions()
-            .position(currentLatLng)
-            .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
-
-        // Add the marker to the map
-        googleMap.addMarker(markerOptions)
     }
 
 
@@ -241,7 +226,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
                 // Reward is within pickup distance and not picked up yet
                 reward.pickedUp = true
                 iterator.remove()
-                updateMap()
+
+                // Remove the corresponding reward marker from the map
+                for (marker in markerList) {
+                    if (marker.position == reward.location) {
+                        val circle = marker.tag as Circle
+                        marker.remove() // Remove the marker from the map
+                        circle.remove() //Remove markers circle of pickup
+                        markerList.remove(marker) // Remove the marker from the list
+                        break // Exit the loop after removing the marker
+                    }
+                }
+
                 showRewardPickedUpMessage()
             }
         }
@@ -274,12 +270,29 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         return (R * c).toFloat()
     }
     private fun updateMap() {
-        rewards.filter { !it.pickedUp }.forEach { reward ->
-            googleMap.addMarker(
-                MarkerOptions()
-                    .position(reward.location)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-            )
+        // Get the vector drawable resource and convert it to a bitmap
+        val vectorDrawable = ContextCompat.getDrawable(this, R.drawable.reward_icon)
+        val bitmap = Bitmap.createBitmap(75, 75, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        vectorDrawable?.setBounds(0, 0, canvas.width, canvas.height)
+        vectorDrawable?.draw(canvas)
+
+
+        rewards.forEach { reward ->
+            val marker = googleMap.addMarker(MarkerOptions().position(reward.location).icon(BitmapDescriptorFactory.fromBitmap(bitmap)).title("Daily reward"))
+            if (marker != null) {
+                markerList.add(marker)
+            }
+
+            // Add circle overlay for reward pickup distance
+            val circleOptions = CircleOptions()
+                .center(reward.location)
+                .radius(REWARD_PICKUP_DISTANCE.toDouble())
+                .strokeColor(Color.BLUE) // Set stroke color
+                .fillColor(Color.argb(70, 0, 0, 255)) // Set fill color with transparency
+            val circle = googleMap.addCircle(circleOptions)
+
+            marker?.tag = circle
         }
     }
 
