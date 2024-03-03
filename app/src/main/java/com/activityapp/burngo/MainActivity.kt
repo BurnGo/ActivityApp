@@ -29,26 +29,33 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.Marker
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
-import kotlin.math.sqrt
+import kotlin.math.*
+import kotlin.random.Random
 
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListener {
+class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListener, LocationListener  {
 
 
     private lateinit var locationManager: LocationManager
     private lateinit var googleMap: GoogleMap
+    private lateinit var progressBar: CircularProgressBar
+
     private val LOCATION_PERMISSION_REQUEST_CODE = 1001
     private val DEFAULT_ZOOM = 15f
-
     private var userMarker: Marker? = null
-    private lateinit var progressBar: CircularProgressBar
+
+    private val rewards = mutableListOf<Reward>()
+    private val MAX_DAILY_REWARDS = 5
+    private val REWARD_RADIUS_METERS = 2000
+    private val REWARD_PICKUP_DISTANCE = 20 // in meters
 
     private var sensorManager: SensorManager? = null
     private var totalSteps = 0f
     private var previousTotalSteps = 0f
-
     private val STEP_THRESHOLD = 5f // Adjust as needed
     private var lastAcceleration = 0f
+
+    val usersLocationIcon = R.drawable.users_location_icon
 
     private val pointsOfInterest = listOf(
         PointOfInterest("KTU Miestelis", LatLng(54.904041, 23.957961)),
@@ -98,41 +105,43 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
             return
         }
+        startLocationUpdates()
 
-        // Get the vector drawable resource
-        val vectorDrawable = ContextCompat.getDrawable(this, R.drawable.users_location_icon)
-        // Convert the vector drawable to a bitmap
-        val bitmap = Bitmap.createBitmap(vectorDrawable!!.intrinsicWidth,
-            vectorDrawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
-        vectorDrawable.draw(canvas)
 
-        val locationListener = object : LocationListener {
-            override fun onLocationChanged(location: Location) {
-                val currentLatLng = LatLng(location.latitude, location.longitude)
-                userMarker?.remove()
-                val markerOptions = MarkerOptions()
-                    .position(currentLatLng)
-                    .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
-                userMarker = googleMap.addMarker(markerOptions)
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, DEFAULT_ZOOM))
-
-                // Add markers for points of interest
-                pointsOfInterest.forEach { poi ->
-                    googleMap.addMarker(
-                        MarkerOptions()
-                            .position(poi.latLng)
-                            .title(poi.name)
-                    )
-                }
-            }
-            override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
-            override fun onProviderEnabled(provider: String) {}
-            override fun onProviderDisabled(provider: String) {}
-        }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10f, locationListener)
+        // Add markers for points of interest
+        addMarkersForPointsOfInterest()
     }
+
+    private fun addMarkersForPointsOfInterest() {
+        pointsOfInterest.forEach { poi ->
+            googleMap.addMarker(
+                MarkerOptions()
+                    .position(poi.latLng)
+                    .title(poi.name)
+            )
+        }
+    }
+
+    private fun addMarkerWithCustomIcon(location: Location, iconResourceId: Int, width: Int, height: Int) {
+        val currentLatLng = LatLng(location.latitude, location.longitude)
+
+        // Get the vector drawable resource and convert it to a bitmap
+        val vectorDrawable = ContextCompat.getDrawable(this, iconResourceId)
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        vectorDrawable?.setBounds(0, 0, canvas.width, canvas.height)
+        vectorDrawable?.draw(canvas)
+
+        // Create marker options with the custom icon
+        val markerOptions = MarkerOptions()
+            .position(currentLatLng)
+            .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+
+        // Add the marker to the map
+        googleMap.addMarker(markerOptions)
+    }
+
+
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -203,6 +212,70 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         Log.d("SensorAccuracy", "Sensor accuracy changed: $accuracy")
     }
 
+    override fun onLocationChanged(location: Location) {
+        userMarker?.remove()
+        val currentLatLng = LatLng(location.latitude, location.longitude)
+        addMarkerWithCustomIcon(location, usersLocationIcon, 100, 100)
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, DEFAULT_ZOOM))
+
+        // Generate daily rewards if not already generated
+        if (rewards.isEmpty()) {
+            generateDailyRewards(location)
+        }
+
+        // Check proximity to rewards
+        val iterator = rewards.iterator()
+        while (iterator.hasNext()) {
+            val reward = iterator.next()
+            val distance = calculateDistance(location.latitude, location.longitude, reward.location.latitude, reward.location.longitude)
+            if (distance <= REWARD_PICKUP_DISTANCE && !reward.pickedUp) {
+                // Reward is within pickup distance and not picked up yet
+                reward.pickedUp = true
+                iterator.remove()
+                updateMap()
+                showRewardPickedUpMessage()
+            }
+        }
+    }
+    private fun startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10f, this)
+        }
+    }
+    private fun generateDailyRewards(userLocation: Location) {
+        for (i in 1..MAX_DAILY_REWARDS) {
+            val randomLatLng = generateRandomLatLng(userLocation, REWARD_RADIUS_METERS)
+            rewards.add(Reward(randomLatLng))
+        }
+        updateMap()
+    }
+    private fun generateRandomLatLng(center: Location, radius: Int): LatLng {
+        val randomDistance = Random.nextDouble(0.0, radius.toDouble())
+        val randomAngle = Random.nextDouble(0.0, 2 * Math.PI)
+        val randomLatitude = center.latitude + (randomDistance * cos(randomAngle)) / 111111
+        val randomLongitude = center.longitude + (randomDistance * sin(randomAngle)) / (111111 * cos(center.latitude * Math.PI / 180))
+        return LatLng(randomLatitude, randomLongitude)
+    }
+    private fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Float {
+        val R = 6371000 // Radius of the Earth in meters
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a = sin(dLat / 2).pow(2) + cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2)) * sin(dLon / 2).pow(2)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        return (R * c).toFloat()
+    }
+    private fun updateMap() {
+        googleMap.clear()
+        rewards.forEach { reward ->
+            googleMap.addMarker(MarkerOptions().position(reward.location).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)))
+        }
+    }
+    private fun showRewardPickedUpMessage() {
+        Toast.makeText(this, "Reward picked up!", Toast.LENGTH_SHORT).show()
+    }
+
 }
 
 data class PointOfInterest(val name: String, val latLng: LatLng)
+data class Reward(val location: LatLng, var pickedUp: Boolean = false)
