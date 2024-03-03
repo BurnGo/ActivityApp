@@ -44,12 +44,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private lateinit var progressBar: CircularProgressBar
 
     private val LOCATION_PERMISSION_REQUEST_CODE = 1001
-    private val DEFAULT_ZOOM = 15f
+    private val DEFAULT_ZOOM = 17f
     private var userMarker: Marker? = null
     private lateinit var bitmap: Bitmap
     private val markerList = mutableListOf<Marker>()
-
     private val rewards = mutableListOf<Reward>()
+
     private val MAX_DAILY_REWARDS = 5
     private val REWARD_MAXIMUM_RADIUS_METERS = 2000
     private val REWARD_MINIMUM_RADIUS_METERS = 300
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private var sensorManager: SensorManager? = null
     private var totalSteps = 0f
     private var previousTotalSteps = 0f
-    private val STEP_THRESHOLD = 5f // Adjust as needed
+    private val STEP_THRESHOLD = 5f
     private var lastAcceleration = 0f
 
     private val pointsOfInterest = listOf(
@@ -303,14 +303,4 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
 }
 
 data class PointOfInterest(val name: String, val latLng: LatLng)
-data class Reward(val location: LatLng, var pickedUp: Boolean = false) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is Reward) return false
-        return location == other.location
-    }
-
-    override fun hashCode(): Int {
-        return location.hashCode()
-    }
-}
+data class Reward(val location: LatLng, var pickedUp: Boolean = false)
