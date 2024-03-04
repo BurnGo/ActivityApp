@@ -50,6 +50,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private val markerList = mutableListOf<Marker>()
     private val rewards = mutableListOf<Reward>()
 
+    private val REWARD_PROBABILITY_THRESHOLD = 0.3
+    private var coinBalance = 0
     private val MAX_DAILY_REWARDS = 5
     private val REWARD_MAXIMUM_RADIUS_METERS = 2000
     private val REWARD_MINIMUM_RADIUS_METERS = 300
@@ -239,7 +241,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
                 }
 
                 showRewardPickedUpMessage()
+
+                if (Random.nextDouble() <= REWARD_PROBABILITY_THRESHOLD) {
+                    // Award the player a coin
+                    awardCoin()
+                }
             }
+        }
+
+        // Check if all rewards are picked up
+        if (rewards.isEmpty()) {
+            showAllRewardsPickedUpMessage()
         }
     }
     private fun startLocationUpdates() {
@@ -268,6 +280,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         val a = sin(dLat / 2).pow(2) + cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2)) * sin(dLon / 2).pow(2)
         val c = 2 * atan2(sqrt(a), sqrt(1 - a))
         return (R * c).toFloat()
+    }
+    private fun awardCoin() {
+        val coinBalanceTextView = findViewById<TextView>(R.id.coin_balance)
+        coinBalance++
+        coinBalanceTextView.text = "Coins: $coinBalance"
     }
     private fun updateMap() {
         // Get the vector drawable resource and convert it to a bitmap
@@ -298,6 +315,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
 
     private fun showRewardPickedUpMessage() {
         Toast.makeText(this, "Reward picked up!", Toast.LENGTH_SHORT).show()
+    }
+    private fun showAllRewardsPickedUpMessage() {
+        Toast.makeText(this, "Congratulations, you picked up all the daily rewards!", Toast.LENGTH_SHORT).show()
     }
 
 }
