@@ -2,6 +2,7 @@ package com.activityapp.burngo
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
@@ -24,6 +25,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -318,6 +320,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     }
     private fun showAllRewardsPickedUpMessage() {
         Toast.makeText(this, "Congratulations, you picked up all the daily rewards!", Toast.LENGTH_SHORT).show()
+    }
+    fun navigateToSettingsActivity(view: View) {
+        // Create an intent to navigate back to the MainActivity
+        val intent = Intent(this, SettingsActivity::class.java)
+        startActivity(intent)
+        finish() // Optional: finish the SettingsActivity to remove it from the back stack
     }
 
 }
