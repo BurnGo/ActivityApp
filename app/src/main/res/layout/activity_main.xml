@@ -53,7 +53,6 @@
         android:id="@+id/bottom_text_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="/8000"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/circular_progress"
         app:layout_constraintEnd_toEndOf="@+id/circular_progress"

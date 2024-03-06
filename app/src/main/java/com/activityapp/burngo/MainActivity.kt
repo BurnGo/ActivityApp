@@ -27,6 +27,7 @@ import android.hardware.SensorManager
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -81,7 +82,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
 
         //Progress bar settings
         progressBar = findViewById(R.id.circular_progress)
-        progressBar.apply { progressMax=8000f }
+        // Load user input from SharedPreferences
+        val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+        val stepGoal = sharedPreferences.getInt("stepGoal", 8000)
+
+        // Update the progressMax of the CircularProgressBar
+        progressBar.progressMax = stepGoal.toFloat()
+
+        // Update the bottom_text_progress TextView
+        val bottomTextProgress = findViewById<TextView>(R.id.bottom_text_progress)
+        bottomTextProgress.text = "/$stepGoal"
 
         //Step calculations
         loadData()
@@ -104,6 +114,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         } else {
             sensorManager?.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_UI)
         }
+
     }
 
     override fun onMapReady(map: GoogleMap) {
