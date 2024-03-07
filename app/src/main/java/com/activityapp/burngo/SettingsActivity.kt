@@ -5,7 +5,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.Spinner
 import androidx.core.widget.addTextChangedListener
 
 class SettingsActivity : AppCompatActivity() {
@@ -32,6 +34,13 @@ class SettingsActivity : AppCompatActivity() {
             editor.putInt("stepGoal", newStepGoal)
             editor.apply()
         }
+
+        //get the spinner from the xml.
+        val dropdown = findViewById<Spinner>(R.id.spinner)
+        val items = arrayOf("Bus", "Small economic car", "Medium sized cars", "Large SUV's or minivans", "Cars with powerfull engines")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
+        dropdown.adapter = adapter
+
     }
 
     fun navigateToMainActivity(view: View) {
