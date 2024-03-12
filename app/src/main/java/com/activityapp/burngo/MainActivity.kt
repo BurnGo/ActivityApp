@@ -2,6 +2,7 @@ package com.activityapp.burngo
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
@@ -24,7 +25,9 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
+import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -79,7 +82,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
 
         //Progress bar settings
         progressBar = findViewById(R.id.circular_progress)
-        progressBar.apply { progressMax=8000f }
+        // Load user input from SharedPreferences
+        val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+        val stepGoal = sharedPreferences.getInt("stepGoal", 8000)
+
+        // Update the progressMax of the CircularProgressBar
+        progressBar.progressMax = stepGoal.toFloat()
+
+        // Update the bottom_text_progress TextView
+        val bottomTextProgress = findViewById<TextView>(R.id.bottom_text_progress)
+        bottomTextProgress.text = "/$stepGoal"
 
         //Step calculations
         loadData()
@@ -102,6 +114,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         } else {
             sensorManager?.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_UI)
         }
+
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -318,6 +331,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     }
     private fun showAllRewardsPickedUpMessage() {
         Toast.makeText(this, "Congratulations, you picked up all the daily rewards!", Toast.LENGTH_SHORT).show()
+    }
+    fun navigateToSettingsActivity(view: View) {
+        // Create an intent to navigate back to the MainActivity
+        val intent = Intent(this, SettingsActivity::class.java)
+        startActivity(intent)
+        finish() // Optional: finish the SettingsActivity to remove it from the back stack
     }
 
 }
