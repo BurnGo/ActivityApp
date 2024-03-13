@@ -24,7 +24,7 @@
         app:layout_constraintVertical_bias="0.249" />
 
     <EditText
-        android:id="@+id/LoginPasswordInput"
+        android:id="@+id/LoginUsernameInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -48,7 +48,7 @@
         app:layout_constraintTop_toBottomOf="@+id/login_text" />
 
     <EditText
-        android:id="@+id/LoginUsernameInput"
+        android:id="@+id/LoginEmailInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -65,9 +65,9 @@
         android:paddingBottom="10dp"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/LoginPasswordInput"
-        app:layout_constraintStart_toStartOf="@+id/LoginPasswordInput"
-        app:layout_constraintTop_toBottomOf="@+id/LoginPasswordInput" />
+        app:layout_constraintEnd_toEndOf="@+id/LoginUsernameInput"
+        app:layout_constraintStart_toStartOf="@+id/LoginUsernameInput"
+        app:layout_constraintTop_toBottomOf="@+id/LoginUsernameInput" />
 
     <EditText
         android:id="@+id/PasswordInput"
@@ -87,9 +87,9 @@
         android:paddingBottom="10dp"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/LoginUsernameInput"
-        app:layout_constraintStart_toStartOf="@+id/LoginUsernameInput"
-        app:layout_constraintTop_toBottomOf="@+id/LoginUsernameInput" />
+        app:layout_constraintEnd_toEndOf="@+id/LoginEmailInput"
+        app:layout_constraintStart_toStartOf="@+id/LoginEmailInput"
+        app:layout_constraintTop_toBottomOf="@+id/LoginEmailInput" />
 
     <EditText
         android:id="@+id/ConfirmPasswordInput"
