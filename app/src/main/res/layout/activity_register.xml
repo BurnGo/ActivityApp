@@ -150,7 +150,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/prata"
+            android:fontFamily="sans-serif"
             android:text="Already have an account? "
             android:textColor="@color/black"
             android:textStyle="bold" />

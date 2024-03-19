@@ -43,6 +43,19 @@ class SettingsActivity : AppCompatActivity() {
 
     }
 
+
+//    fun navigateToStatisticActivity(view: View) {
+//        // Create an intent to navigate back to the MainActivity
+//        val intent = Intent(this, MainActivity::class.java)
+//        startActivity(intent)
+//        finish() // Optional: finish the SettingsActivity to remove it from the back stack
+//    }
+//    fun navigateToTreeActivity(view: View) {
+//        // Create an intent to navigate back to the MainActivity
+//        val intent = Intent(this, MainActivity::class.java)
+//        startActivity(intent)
+//        finish() // Optional: finish the SettingsActivity to remove it from the back stack
+//    }
     fun navigateToMainActivity(view: View) {
         // Create an intent to navigate back to the MainActivity
         val intent = Intent(this, MainActivity::class.java)
