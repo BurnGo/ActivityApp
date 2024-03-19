@@ -27,7 +27,6 @@ import android.hardware.SensorManager
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -149,7 +148,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
             )
         }
     }
-
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
