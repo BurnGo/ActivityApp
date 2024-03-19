@@ -103,66 +103,16 @@
         app:layout_constraintTop_toBottomOf="@+id/inputStepGoal"
         app:layout_constraintVertical_bias="0.060000002" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="0dp"
+        android:id="@+id/bottom_nav"
         android:layout_height="wrap_content"
-        android:layout_marginTop="220dp"
-        android:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/img" />
-
-    <ImageView
-        android:id="@+id/navigateSettings"
-        android:layout_width="40dp"
-        android:layout_height="44dp"
-        android:tint="@color/green"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.11"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.92"
-        app:srcCompat="@drawable/person_icon" />
-
-    <ImageView
-        android:id="@+id/navigateStatistics"
-        android:layout_width="40dp"
-        android:layout_height="44dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.36"
-        app:layout_constraintStart_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.92"
-        app:srcCompat="@drawable/statistic_icon" />
-
-    <ImageView
-        android:id="@+id/navigateTree"
-        android:layout_width="40dp"
-        android:layout_height="44dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/imageView2"
-        app:layout_constraintHorizontal_bias="0.63"
-        app:layout_constraintStart_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.92"
-        app:srcCompat="@drawable/tree_icon" />
-
-    <ImageView
-        android:id="@+id/navigateMaps"
-        android:layout_width="40dp"
-        android:layout_height="44dp"
-        android:onClick="navigateToMainActivity"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/imageView2"
-        app:layout_constraintHorizontal_bias="0.88"
-        app:layout_constraintStart_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.98"
-        app:srcCompat="@drawable/map_icon" />
+        app:menu="@menu/bottom_nav"
+        app:itemIconSize="32dp"
+        app:itemIconTint="@drawable/nav_button_background"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -34,6 +34,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.Marker
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import kotlin.math.*
 import kotlin.random.Random
@@ -115,6 +116,26 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
             sensorManager?.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_UI)
         }
 
+        //Navbar stuff
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_nava)
+        bottomNavigation.selectedItemId = R.id.map
+        bottomNavigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    true
+                }
+//                R.id.action_profile -> {
+//                    startActivity(Intent(this, ProfileActivity::class.java))
+//                    true
+//                }
+//                R.id.action_settings -> {
+//                    startActivity(Intent(this, SettingsActivity::class.java))
+//                    true
+//                }
+                else -> false
+            }
+        }
     }
 
     override fun onMapReady(map: GoogleMap) {

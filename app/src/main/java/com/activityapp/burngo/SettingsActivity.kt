@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.core.widget.addTextChangedListener
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +41,27 @@ class SettingsActivity : AppCompatActivity() {
         val items = arrayOf("Bus", "Small economic car", "Medium sized cars", "Large SUV's or minivans", "Cars with powerfull engines")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
         dropdown.adapter = adapter
+
+        //Navbar stuff
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_nav)
+        bottomNavigation.selectedItemId = R.id.settings
+        bottomNavigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.map -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    true
+                }
+//                R.id.action_profile -> {
+//                    startActivity(Intent(this, ProfileActivity::class.java))
+//                    true
+//                }
+//                R.id.action_settings -> {
+//                    startActivity(Intent(this, SettingsActivity::class.java))
+//                    true
+//                }
+                else -> false
+            }
+        }
 
     }
 

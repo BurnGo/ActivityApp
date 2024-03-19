@@ -12,8 +12,8 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity"
         android:layout_gravity="center"
-        android:layout_marginTop="150dp"
-        android:layout_marginBottom="150dp">
+        android:layout_marginTop="75dp"
+        android:layout_marginBottom="250dp">
 
         <fragment
             android:id="@+id/map_fragment"
@@ -35,7 +35,7 @@
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.98" />
+        app:layout_constraintVertical_bias="0.84000003" />
 
     <TextView
         android:id="@+id/top_text_progress"
@@ -70,7 +70,7 @@
         app:layout_constraintHorizontal_bias="0.84"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.94" />
+        app:layout_constraintVertical_bias="0.8" />
 
     <TextView
         android:id="@+id/coin_balance"
@@ -85,21 +85,18 @@
         app:layout_constraintHorizontal_bias="0.87"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.100000024" />
+        app:layout_constraintVertical_bias="0.050000012" />
 
-    <ImageView
-        android:id="@+id/settingsButton"
-        android:layout_width="wrap_content"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="0dp"
+        android:id="@+id/bottom_nava"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:onClick="navigateToSettingsActivity"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.01999998"
-        app:srcCompat="@drawable/settings_icon" />
+        app:menu="@menu/bottom_nav"
+        app:itemIconSize="32dp"
+        app:itemIconTint="@drawable/nav_button_background"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
