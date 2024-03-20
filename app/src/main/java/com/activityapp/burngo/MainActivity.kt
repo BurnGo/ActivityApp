@@ -125,10 +125,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
                     startActivity(Intent(this, SettingsActivity::class.java))
                     true
                 }
-//                R.id.action_profile -> {
-//                    startActivity(Intent(this, ProfileActivity::class.java))
-//                    true
-//                }
+                R.id.statistics -> {
+                    startActivity(Intent(this, StatisticActivity::class.java))
+                    true
+                }
 //                R.id.action_settings -> {
 //                    startActivity(Intent(this, SettingsActivity::class.java))
 //                    true

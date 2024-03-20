@@ -4,16 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/main_page_background"
     tools:context=".MainActivity">
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity"
+        android:layout_width="411dp"
+        android:layout_height="655dp"
         android:layout_gravity="center"
-        android:layout_marginTop="75dp"
-        android:layout_marginBottom="250dp">
+        app:layout_constraintBottom_toTopOf="@+id/bottom_nava"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:context=".MainActivity">
 
         <fragment
             android:id="@+id/map_fragment"
@@ -25,24 +29,26 @@
 
     <com.mikhaellopez.circularprogressbar.CircularProgressBar
         android:id="@+id/circular_progress"
-        android:layout_width="125dp"
-        android:layout_height="125dp"
-        app:cpb_background_progressbar_color="@color/white"
-        app:cpb_progressbar_color="@color/white"
+        android:layout_width="91dp"
+        android:layout_height="95dp"
+        app:cpb_background_progressbar_color="@color/green"
+        app:cpb_background_progressbar_color_end="@color/green"
+        app:cpb_progressbar_color="@color/green"
+        app:cpb_progressbar_color_end="@color/green"
         app:cpb_progressbar_width="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.84000003" />
+        app:layout_constraintVertical_bias="0.884" />
 
     <TextView
         android:id="@+id/top_text_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
-        android:textColor="@color/white"
+        android:textColor="@color/green"
         app:layout_constraintBottom_toBottomOf="@+id/circular_progress"
         app:layout_constraintEnd_toEndOf="@+id/circular_progress"
         app:layout_constraintStart_toStartOf="@+id/circular_progress"
@@ -53,7 +59,7 @@
         android:id="@+id/bottom_text_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:textColor="@color/green"
         app:layout_constraintBottom_toBottomOf="@+id/circular_progress"
         app:layout_constraintEnd_toEndOf="@+id/circular_progress"
         app:layout_constraintStart_toStartOf="@+id/circular_progress"
@@ -64,20 +70,23 @@
         android:id="@+id/simulate_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/green"
         android:text="Add Steps"
+        android:textColorHighlight="@color/green"
+        android:textColorLink="@color/green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.84"
+        app:layout_constraintHorizontal_bias="0.808"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8" />
+        app:layout_constraintVertical_bias="0.861" />
 
     <TextView
         android:id="@+id/coin_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Coins: 0"
-        android:textColor="@color/white"
+        android:textColor="@color/green"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -85,7 +94,7 @@
         app:layout_constraintHorizontal_bias="0.87"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.050000012" />
+        app:layout_constraintVertical_bias="0.8" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="0dp"
