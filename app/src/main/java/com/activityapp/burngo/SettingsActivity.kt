@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.core.widget.addTextChangedListener
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,8 +42,42 @@ class SettingsActivity : AppCompatActivity() {
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
         dropdown.adapter = adapter
 
+        //Navbar stuff
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_nav)
+        bottomNavigation.selectedItemId = R.id.settings
+        bottomNavigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.map -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    true
+                }
+                R.id.statistics -> {
+                    startActivity(Intent(this, StatisticActivity::class.java))
+                    true
+                }
+//                R.id.action_settings -> {
+//                    startActivity(Intent(this, SettingsActivity::class.java))
+//                    true
+//                }
+                else -> false
+            }
+        }
+
     }
 
+
+//    fun navigateToStatisticActivity(view: View) {
+//        // Create an intent to navigate back to the MainActivity
+//        val intent = Intent(this, MainActivity::class.java)
+//        startActivity(intent)
+//        finish() // Optional: finish the SettingsActivity to remove it from the back stack
+//    }
+//    fun navigateToTreeActivity(view: View) {
+//        // Create an intent to navigate back to the MainActivity
+//        val intent = Intent(this, MainActivity::class.java)
+//        startActivity(intent)
+//        finish() // Optional: finish the SettingsActivity to remove it from the back stack
+//    }
     fun navigateToMainActivity(view: View) {
         // Create an intent to navigate back to the MainActivity
         val intent = Intent(this, MainActivity::class.java)
