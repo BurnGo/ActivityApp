@@ -39,6 +39,14 @@ class RegisterActivity : AppCompatActivity() {
             startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
         }
 
+        //Temporary button to go from register to maps window
+        val btnTree: TextView = findViewById(R.id.GoToTreeTemp)
+        btnTree.setOnClickListener {
+            startActivity(Intent(this@RegisterActivity, TreeActivity::class.java))
+        }
+
+
+
         val loginButton = findViewById<TextView>(R.id.LoginButton)
         loginButton.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
