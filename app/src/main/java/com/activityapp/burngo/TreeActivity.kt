@@ -66,8 +66,8 @@ class TreeActivity : AppCompatActivity() {
                     startActivity(Intent(this, MainActivity::class.java))
                     true
                 }
-                R.id.plant -> {
-                    startActivity(Intent(this, TreeActivity::class.java))
+                R.id.statistics -> {
+                    startActivity(Intent(this, StatisticActivity::class.java))
                     true
                 }
                 R.id.settings -> {
