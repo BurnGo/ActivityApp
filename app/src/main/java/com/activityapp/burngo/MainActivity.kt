@@ -133,10 +133,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
                     startActivity(Intent(this, StatisticActivity::class.java))
                     true
                 }
-//                R.id.action_settings -> {
-//                    startActivity(Intent(this, SettingsActivity::class.java))
-//                    true
-//                }
+                R.id.plant -> {
+                    startActivity(Intent(this, TreeActivity::class.java))
+                    true
+                }
                 else -> false
             }
         }

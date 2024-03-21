@@ -1,5 +1,6 @@
 package com.activityapp.burngo
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.Toast
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class TreeActivity : AppCompatActivity() {
 
@@ -51,6 +53,28 @@ class TreeActivity : AppCompatActivity() {
             } else {
                 fertilizerCounter++
                 Toast.makeText(this, "You fertilized the plant!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+        //Navbar stuff
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_nava)
+        bottomNavigation.selectedItemId = R.id.plant
+        bottomNavigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.map -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    true
+                }
+                R.id.plant -> {
+                    startActivity(Intent(this, TreeActivity::class.java))
+                    true
+                }
+                R.id.settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    true
+                }
+                else -> false
             }
         }
     }

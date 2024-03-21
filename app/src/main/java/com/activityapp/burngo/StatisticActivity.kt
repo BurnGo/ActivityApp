@@ -19,10 +19,10 @@ class StatisticActivity : AppCompatActivity() {
                     startActivity(Intent(this, MainActivity::class.java))
                     true
                 }
-//                R.id.action_profile -> {
-//                    startActivity(Intent(this, ProfileActivity::class.java))
-//                    true
-//                }
+                R.id.plant -> {
+                    startActivity(Intent(this, TreeActivity::class.java))
+                    true
+                }
                 R.id.settings -> {
                     startActivity(Intent(this, SettingsActivity::class.java))
                     true
