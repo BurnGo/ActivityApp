@@ -54,9 +54,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private val markerList = mutableListOf<Marker>()
     private val rewards = mutableListOf<Reward>()
 
-    private val REWARD_PROBABILITY_THRESHOLD = 0.3
+    private val NUMBER_OF_POI = 2
+    private val MAX_DAILY_REWARDS = 3
+    private val REWARD_PROBABILITY_THRESHOLD = 0.8
     private var coinBalance = 0
-    private val MAX_DAILY_REWARDS = 5
     private val REWARD_MAXIMUM_RADIUS_METERS = 2000
     private val REWARD_MINIMUM_RADIUS_METERS = 300
     private val REWARD_PICKUP_DISTANCE = 30 // in meters
@@ -69,8 +70,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
 
     private val pointsOfInterest = listOf(
         PointOfInterest("KTU Miestelis", LatLng(54.904041, 23.957961)),
-        PointOfInterest("Triju Mergeliu tiltas", LatLng(54.896881, 23.969057))
+        PointOfInterest("Triju Mergeliu tiltas", LatLng(54.896881, 23.969057)),
+        PointOfInterest("Azuolynas", LatLng( 54.901206, 23.949372)),
+        PointOfInterest("Dainu slenis", LatLng(54.894734, 23.943053)),
+        PointOfInterest("Vienybes aikste", LatLng(54.899160, 23.912995))
         // Add more points of interest as needed
+
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -157,18 +162,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
         vectorDrawable.draw(canvas)
 
-        // Add markers for points of interest
-        addMarkersForPointsOfInterest()
-    }
-
-    private fun addMarkersForPointsOfInterest() {
-        pointsOfInterest.forEach { poi ->
-            googleMap.addMarker(
-                MarkerOptions()
-                    .position(poi.latLng)
-                    .title(poi.name)
-            )
-        }
     }
 
 
@@ -250,7 +243,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
 
         // Generate daily rewards if not already generated
         if (rewards.isEmpty()) {
-            generateDailyRewards(location)
+            generatePoints(location)
         }
 
         // Check proximity to rewards
@@ -293,11 +286,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10f, this)
         }
     }
-    private fun generateDailyRewards(userLocation: Location) {
+    private fun generatePoints(userLocation: Location) {
         for (i in 1..MAX_DAILY_REWARDS) {
             val randomLatLng = generateRandomLatLng(userLocation, REWARD_MAXIMUM_RADIUS_METERS)
-            rewards.add(Reward(randomLatLng))
+            rewards.add(Reward("Randomly selected", randomLatLng))
         }
+
+        val shuffledPointsOfInterest = pointsOfInterest.shuffled()
+        // Add markers for the specified number of points in the shuffled list
+        for (i in 0 until min(NUMBER_OF_POI, shuffledPointsOfInterest.size)) {
+            val poi = shuffledPointsOfInterest[i]
+            rewards.add(Reward(poi.name, poi.latLng))
+        }
+
         updateMap()
     }
     private fun generateRandomLatLng(center: Location, radius: Int): LatLng {
@@ -323,14 +324,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private fun updateMap() {
         // Get the vector drawable resource and convert it to a bitmap
         val vectorDrawable = ContextCompat.getDrawable(this, R.drawable.reward_icon)
-        val bitmap = Bitmap.createBitmap(75, 75, Bitmap.Config.ARGB_8888)
+        val bitmap = Bitmap.createBitmap(90, 90, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         vectorDrawable?.setBounds(0, 0, canvas.width, canvas.height)
         vectorDrawable?.draw(canvas)
 
 
         rewards.forEach { reward ->
-            val marker = googleMap.addMarker(MarkerOptions().position(reward.location).icon(BitmapDescriptorFactory.fromBitmap(bitmap)).title("Daily reward"))
+            val marker = googleMap.addMarker(MarkerOptions().position(reward.location).icon(BitmapDescriptorFactory.fromBitmap(bitmap)).title(reward.name))
             if (marker != null) {
                 markerList.add(marker)
             }
@@ -339,8 +340,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
             val circleOptions = CircleOptions()
                 .center(reward.location)
                 .radius(REWARD_PICKUP_DISTANCE.toDouble())
-                .strokeColor(Color.BLUE) // Set stroke color
-                .fillColor(Color.argb(70, 0, 0, 255)) // Set fill color with transparency
+                .strokeColor(Color.argb(100, 0, 0, 255)) //outer ring
+                .fillColor(Color.argb(70, 0, 0, 255)) //inner ring
             val circle = googleMap.addCircle(circleOptions)
 
             marker?.tag = circle
@@ -363,4 +364,4 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
 }
 
 data class PointOfInterest(val name: String, val latLng: LatLng)
-data class Reward(val location: LatLng, var pickedUp: Boolean = false)
+data class Reward(val name: String, val location: LatLng, var pickedUp: Boolean = false)
