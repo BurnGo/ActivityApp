@@ -1,22 +1,8 @@
 package com.activityapp.burngo
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -24,20 +10,40 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.Volley
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.CircleOptions
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
-import kotlin.math.*
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.pow
+import kotlin.math.sin
+import kotlin.math.sqrt
 import kotlin.random.Random
+
 
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListener, LocationListener  {
@@ -58,6 +64,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private val MAX_DAILY_REWARDS = 3
     private val REWARD_PROBABILITY_THRESHOLD = 0.8
     private var coinBalance = 0
+    private val MAX_DAILY_REWARDS = 3
     private val REWARD_MAXIMUM_RADIUS_METERS = 2000
     private val REWARD_MINIMUM_RADIUS_METERS = 300
     private val REWARD_PICKUP_DISTANCE = 30 // in meters
@@ -68,7 +75,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private val STEP_THRESHOLD = 5f
     private var lastAcceleration = 0f
 
-    private val pointsOfInterest = listOf(
+    private val pointsOfInterest = mutableListOf<PointOfInterest>(
         PointOfInterest("KTU Miestelis", LatLng(54.904041, 23.957961)),
         PointOfInterest("Triju Mergeliu tiltas", LatLng(54.896881, 23.969057)),
         PointOfInterest("Azuolynas", LatLng( 54.901206, 23.949372)),
@@ -83,13 +90,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         setContentView(R.layout.activity_main)
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
-        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
 
 
         //Progress bar settings
         progressBar = findViewById(R.id.circular_progress)
         // Load user input from SharedPreferences
-        val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("myPrefs", MODE_PRIVATE)
         val stepGoal = sharedPreferences.getInt("stepGoal", 8000)
 
         // Update the progressMax of the CircularProgressBar
@@ -102,7 +109,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         //Step calculations
         loadData()
         resetSteps()
-        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
 
         //this is temporary to test progress bar
         val simulateButton = findViewById<Button>(R.id.simulate_button)
@@ -120,6 +127,37 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         } else {
             sensorManager?.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_UI)
         }
+        val queue = Volley.newRequestQueue(this);
+        val url = "http://10.0.2.2/getPoints.php"
+
+
+        val request = JsonArrayRequest(Request.Method.GET, url, null,
+            { response ->
+                try {
+                    for (i in 0 until response.length()){
+                        val obj = response.getJSONObject(i)
+                        val name = obj.getString("name")
+                        val lat = obj.getDouble("latitude")
+                        val lng = obj.getDouble("longitude")
+                        val point = PointOfInterest(name, LatLng(lat, lng))
+                        pointsOfInterest.add(point)
+
+                    }
+
+
+                }
+                catch(e: Exception){
+                    Log.d("Oopsie", e.message.toString())
+                }
+            },
+            { error ->
+                Log.d("Negerai", error.message.toString())
+            }
+        )
+
+        queue.add(request)
+
+
 
         //Navbar stuff
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_nava)
@@ -143,6 +181,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         }
     }
 
+
+
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
 
@@ -161,6 +201,30 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         val canvas = Canvas(bitmap)
         vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
         vectorDrawable.draw(canvas)
+
+
+        // Add markers for points of interest
+        addMarkersForPointsOfInterest()
+    }
+
+    private fun addMarkersForPointsOfInterest() {
+        var index = 0
+        while (index < 2){
+            googleMap.addMarker(
+                MarkerOptions()
+                    .position(pointsOfInterest[index].latLng)
+                    .title(pointsOfInterest[index].name)
+            )
+            index++
+        }
+        /*
+        pointsOfInterest.forEach { poi ->
+            googleMap.addMarker(
+                MarkerOptions()
+                    .position(poi.latLng)
+                    .title(poi.name)
+            )
+        }*/
 
     }
 
@@ -218,13 +282,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     }
 
     private fun saveData() {
-        val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("myPrefs", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putFloat("key1", previousTotalSteps)
         editor.apply()
     }
     private fun loadData() {
-        val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("myPrefs", MODE_PRIVATE)
         val savedNumber = sharedPreferences.getFloat("key1", 0f)
         Log.d("MainActivity", "$savedNumber")
         previousTotalSteps = savedNumber
@@ -286,12 +350,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10f, this)
         }
     }
+
     private fun generatePoints(userLocation: Location) {
         for (i in 1..MAX_DAILY_REWARDS) {
             val randomLatLng = generateRandomLatLng(userLocation, REWARD_MAXIMUM_RADIUS_METERS)
             rewards.add(Reward("Randomly selected", randomLatLng))
         }
-
         val shuffledPointsOfInterest = pointsOfInterest.shuffled()
         // Add markers for the specified number of points in the shuffled list
         for (i in 0 until min(NUMBER_OF_POI, shuffledPointsOfInterest.size)) {

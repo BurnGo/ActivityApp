@@ -1,13 +1,13 @@
 package com.activityapp.burngo
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -36,7 +36,7 @@ class RegisterActivity : AppCompatActivity() {
         //Temporary button to go from register to maps window
         val btnMaps: TextView = findViewById(R.id.GoToMapsTemp)
         btnMaps.setOnClickListener {
-            startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
+            startActivity(Intent(this@RegisterActivity, MainActivity::class.java))//-----
         }
 
         val loginButton = findViewById<TextView>(R.id.LoginButton)
