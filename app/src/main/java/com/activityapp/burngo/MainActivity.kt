@@ -35,6 +35,7 @@ import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -59,7 +60,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private val markerList = mutableListOf<Marker>()
     private val rewards = mutableListOf<Reward>()
 
-    private val REWARD_PROBABILITY_THRESHOLD = 0.3
+    private val NUMBER_OF_POI = 2
+    private val MAX_DAILY_REWARDS = 3
+    private val REWARD_PROBABILITY_THRESHOLD = 0.8
     private var coinBalance = 0
     private val MAX_DAILY_REWARDS = 3
     private val REWARD_MAXIMUM_RADIUS_METERS = 2000
@@ -74,8 +77,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
 
     private val pointsOfInterest = mutableListOf<PointOfInterest>(
         PointOfInterest("KTU Miestelis", LatLng(54.904041, 23.957961)),
-        PointOfInterest("Triju Mergeliu tiltas", LatLng(54.896881, 23.969057))
+        PointOfInterest("Triju Mergeliu tiltas", LatLng(54.896881, 23.969057)),
+        PointOfInterest("Azuolynas", LatLng( 54.901206, 23.949372)),
+        PointOfInterest("Dainu slenis", LatLng(54.894734, 23.943053)),
+        PointOfInterest("Vienybes aikste", LatLng(54.899160, 23.912995))
         // Add more points of interest as needed
+
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -152,6 +159,26 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
 
 
 
+        //Navbar stuff
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_nava)
+        bottomNavigation.selectedItemId = R.id.map
+        bottomNavigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    true
+                }
+                R.id.statistics -> {
+                    startActivity(Intent(this, StatisticActivity::class.java))
+                    true
+                }
+//                R.id.action_settings -> {
+//                    startActivity(Intent(this, SettingsActivity::class.java))
+//                    true
+//                }
+                else -> false
+            }
+        }
     }
 
 
@@ -175,6 +202,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
         vectorDrawable.draw(canvas)
 
+
         // Add markers for points of interest
         addMarkersForPointsOfInterest()
     }
@@ -197,6 +225,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
                     .title(poi.name)
             )
         }*/
+
     }
 
 
@@ -278,7 +307,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
 
         // Generate daily rewards if not already generated
         if (rewards.isEmpty()) {
-            generateDailyRewards(location)
+            generatePoints(location)
         }
 
         // Check proximity to rewards
@@ -321,15 +350,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10f, this)
         }
     }
-    private fun generateDailyRewards(userLocation: Location) {
 
+    private fun generatePoints(userLocation: Location) {
         for (i in 1..MAX_DAILY_REWARDS) {
             val randomLatLng = generateRandomLatLng(userLocation, REWARD_MAXIMUM_RADIUS_METERS)
-            rewards.add(Reward(randomLatLng))
+            rewards.add(Reward("Randomly selected", randomLatLng))
         }
-        for (i in 0 until 2){
-            val randomIndex = Random.nextInt(0, pointsOfInterest.size)
-            rewards.add(Reward(pointsOfInterest[randomIndex].latLng))
+        val shuffledPointsOfInterest = pointsOfInterest.shuffled()
+        // Add markers for the specified number of points in the shuffled list
+        for (i in 0 until min(NUMBER_OF_POI, shuffledPointsOfInterest.size)) {
+            val poi = shuffledPointsOfInterest[i]
+            rewards.add(Reward(poi.name, poi.latLng))
         }
 
         updateMap()
@@ -357,14 +388,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private fun updateMap() {
         // Get the vector drawable resource and convert it to a bitmap
         val vectorDrawable = ContextCompat.getDrawable(this, R.drawable.reward_icon)
-        val bitmap = Bitmap.createBitmap(75, 75, Bitmap.Config.ARGB_8888)
+        val bitmap = Bitmap.createBitmap(90, 90, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         vectorDrawable?.setBounds(0, 0, canvas.width, canvas.height)
         vectorDrawable?.draw(canvas)
 
 
         rewards.forEach { reward ->
-            val marker = googleMap.addMarker(MarkerOptions().position(reward.location).icon(BitmapDescriptorFactory.fromBitmap(bitmap)).title("Daily reward"))
+            val marker = googleMap.addMarker(MarkerOptions().position(reward.location).icon(BitmapDescriptorFactory.fromBitmap(bitmap)).title(reward.name))
             if (marker != null) {
                 markerList.add(marker)
             }
@@ -373,8 +404,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
             val circleOptions = CircleOptions()
                 .center(reward.location)
                 .radius(REWARD_PICKUP_DISTANCE.toDouble())
-                .strokeColor(Color.BLUE) // Set stroke color
-                .fillColor(Color.argb(70, 0, 0, 255)) // Set fill color with transparency
+                .strokeColor(Color.argb(100, 0, 0, 255)) //outer ring
+                .fillColor(Color.argb(70, 0, 0, 255)) //inner ring
             val circle = googleMap.addCircle(circleOptions)
 
             marker?.tag = circle
@@ -397,4 +428,4 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
 }
 
 data class PointOfInterest(val name: String, val latLng: LatLng)
-data class Reward(val location: LatLng, var pickedUp: Boolean = false)
+data class Reward(val name: String, val location: LatLng, var pickedUp: Boolean = false)

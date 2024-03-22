@@ -16,11 +16,5 @@ class StartPageActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
-        val loginButton = findViewById<TextView>(R.id.LoginButton)
-        loginButton.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-        }
     }
 }
