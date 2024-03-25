@@ -23,22 +23,24 @@
         android:id="@+id/water_image"
         android:layout_width="159dp"
         android:layout_height="135dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_nava"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/treeImageView"
+        app:layout_constraintVertical_bias="0.39"
         app:srcCompat="@drawable/watering_can" />
 
     <ImageView
         android:id="@+id/fertilizer_image"
         android:layout_width="111dp"
         android:layout_height="89dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_nava"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.85"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/treeImageView"
+        app:layout_constraintVertical_bias="0.39"
         app:srcCompat="@drawable/fertilizer" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
