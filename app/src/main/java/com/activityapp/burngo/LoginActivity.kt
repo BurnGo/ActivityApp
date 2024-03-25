@@ -1,13 +1,13 @@
 package com.activityapp.burngo
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.content.Intent
+import android.os.Bundle
 import android.text.TextUtils
-import android.widget.TextView
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var uname: EditText
@@ -39,6 +39,8 @@ class LoginActivity : AppCompatActivity() {
                 val checkuser = dbHelper.checkUserpass(unameText, pwordText)
                 if(checkuser){
                     Toast.makeText(this, "Login was successful", Toast.LENGTH_SHORT).show()
+                    val id = dbHelper.getUserIdByName(unameText)
+                    dbHelper.loginUser(id, unameText)
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                 }

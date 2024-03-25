@@ -39,6 +39,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import kotlin.math.atan2
 import kotlin.math.cos
+import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
@@ -52,6 +53,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private lateinit var locationManager: LocationManager
     private lateinit var googleMap: GoogleMap
     private lateinit var progressBar: CircularProgressBar
+    private lateinit var dbHelper: DBHelper
 
     private val LOCATION_PERMISSION_REQUEST_CODE = 1001
     private val DEFAULT_ZOOM = 17f
@@ -64,7 +66,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private val MAX_DAILY_REWARDS = 3
     private val REWARD_PROBABILITY_THRESHOLD = 0.8
     private var coinBalance = 0
-    private val MAX_DAILY_REWARDS = 3
     private val REWARD_MAXIMUM_RADIUS_METERS = 2000
     private val REWARD_MINIMUM_RADIUS_METERS = 300
     private val REWARD_PICKUP_DISTANCE = 30 // in meters
@@ -91,7 +92,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-
+        dbHelper = DBHelper(this)
 
         //Progress bar settings
         progressBar = findViewById(R.id.circular_progress)
@@ -424,6 +425,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         startActivity(intent)
         finish() // Optional: finish the SettingsActivity to remove it from the back stack
     }
+
+
 
 }
 

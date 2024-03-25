@@ -3,6 +3,7 @@ package com.activityapp.burngo
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -47,29 +48,41 @@ class RegisterActivity : AppCompatActivity() {
         val registerButton = findViewById<Button>(R.id.RegisterButton)
         registerButton.setOnClickListener {
             // Display a toast message
-            val unameText = uname.text.toString()
-            val emailText = email.text.toString()
-            val pwordText = pword.text.toString()
-            val confirmpwordText = confirmpword.text.toString()
-            val saveData = dbHelper.insertData(unameText, emailText, pwordText)
+            try {
+                val unameText = uname.text.toString()
+                val emailText = email.text.toString()
+                val pwordText = pword.text.toString()
+                val confirmpwordText = confirmpword.text.toString()
+                val saveData = dbHelper.insertData(unameText, emailText, pwordText)
 
-            if(TextUtils.isEmpty(unameText) || TextUtils.isEmpty(emailText) || TextUtils.isEmpty(pwordText) || TextUtils.isEmpty(confirmpwordText)) {
-                Toast.makeText(this, "Missing info", Toast.LENGTH_SHORT).show()
+
+
+
+                if (TextUtils.isEmpty(unameText) || TextUtils.isEmpty(emailText) || TextUtils.isEmpty(
+                        pwordText
+                    ) || TextUtils.isEmpty(confirmpwordText)
+                ) {
+                    Toast.makeText(this, "Missing info", Toast.LENGTH_SHORT).show()
+                } else {
+                    if (pwordText.equals(confirmpwordText)) {
+
+                        if (saveData) {
+                            Toast.makeText(this, "Register was successful", Toast.LENGTH_SHORT)
+                                .show()
+                            val intent = Intent(this, LoginActivity::class.java)
+                            startActivity(intent)
+                        }
+                        else {
+
+                            Toast.makeText(this, "User already exists", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
-            else{
-                if(pwordText.equals(confirmpwordText)){
-                    if(saveData){
-                        Toast.makeText(this, "Register was successful", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this, LoginActivity::class.java)
-                        startActivity(intent)
-                    }
-                    else{
-                        Toast.makeText(this, "User already exists", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                else{
-                    Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
-                }
+            catch (e: Exception){
+                Log.d("KURWA", e.message.toString())
             }
         }
     }
