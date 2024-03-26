@@ -5,6 +5,8 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import java.text.SimpleDateFormat
+import java.time.LocalDate
 
 class DBHelper(context: Context):SQLiteOpenHelper(context, "app.sqlite", null, 1) {
     override fun onCreate(db: SQLiteDatabase?) {
@@ -82,6 +84,53 @@ class DBHelper(context: Context):SQLiteOpenHelper(context, "app.sqlite", null, 1
         val result = db.delete("ActiveUser", "id=?", arrayOf(id.toString()))
         db.close()
         return result
+    }
+
+    fun checkActiveUsersCount(): Boolean{
+        val db = this.writableDatabase;
+        val query = "SELECT * from ActiveUsers where id = 1";
+        val cursor = db.rawQuery(query, null);
+        if(cursor.count > 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        db.close()
+        return true;
+    }
+
+    fun getActiveUserID(): Int{
+        val db = this.readableDatabase
+        var userId: Int = -1
+        val query = "SELECT id_User FROM ActiveUsers WHERE id = 1"
+        val cursor: Cursor = db.rawQuery(query, null)
+        cursor.use {
+            if (it.moveToFirst()) {
+                userId = it.getColumnIndex("id_User")
+            }
+        }
+        db.close()
+        return userId
+    }
+
+    fun addSteps(stepsCount: Int, distance: Double, caloriesBurned: Int, co2_saved: Double, time: Double): Boolean{
+        val db = this.writableDatabase
+        val today: LocalDate = LocalDate.now()
+        // Format the date as a string
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val dateString = dateFormat.format(today)
+        val cv = ContentValues()
+        cv.put("date", dateString)
+        cv.put("steps_count", stepsCount)
+        cv.put("distance", distance)
+        cv.put("calories_burned", caloriesBurned)
+        cv.put("co2_saved_mg", co2_saved)
+        cv.put("time", time)
+        val UserID = getActiveUserID()
+        cv.put("fk_Userid_User", UserID)
+        val result = db.insert("Steps", null, cv)
+        db.close()
+        return result != 1L
     }
 
     fun getUserIdByName(username: String): Int{
