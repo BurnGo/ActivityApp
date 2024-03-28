@@ -103,15 +103,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         resetSteps()
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-        //this is temporary to test progress bar
-        val simulateButton = findViewById<Button>(R.id.simulate_button)
-        simulateButton.setOnClickListener {
-            // Increment the totalSteps variable to simulate steps taken
-            totalSteps += 10f // Increment by 10 steps (adjust as needed)
-
-            // Update UI with the new step count
-            updateStepCountUI(totalSteps.toInt())
-        }
 
         val accelerometerSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         if (accelerometerSensor == null) {
@@ -317,7 +308,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private fun awardCoin() {
         val coinBalanceTextView = findViewById<TextView>(R.id.coin_balance)
         coinBalance++
-        coinBalanceTextView.text = "Coins: $coinBalance"
+        coinBalanceTextView.text = "Coin Balance: $coinBalance"
     }
     private fun updateMap() {
         // Get the vector drawable resource and convert it to a bitmap

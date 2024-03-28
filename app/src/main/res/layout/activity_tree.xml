@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TreeActivity"
-    android:background="@drawable/background">
+    android:background="@drawable/tree_background">
 
     <ImageView
         android:id="@+id/treeImageView"
@@ -17,30 +17,40 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintVertical_bias="0.74" />
 
     <ImageView
         android:id="@+id/water_image"
-        android:layout_width="159dp"
-        android:layout_height="135dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="@drawable/circle_shape_white"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_nava"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/treeImageView"
-        app:layout_constraintVertical_bias="0.39"
-        app:srcCompat="@drawable/watering_can" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.9"
+        app:srcCompat="@drawable/water" />
 
     <ImageView
         android:id="@+id/fertilizer_image"
-        android:layout_width="111dp"
-        android:layout_height="89dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="@drawable/circle_shape_white"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="15dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_nava"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/treeImageView"
-        app:layout_constraintVertical_bias="0.39"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.9"
         app:srcCompat="@drawable/fertilizer" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -53,4 +63,48 @@
         app:menu="@menu/bottom_nav"
         app:itemIconSize="32dp"
         app:itemIconTint="@drawable/nav_button_background"/>
+
+    <ImageView
+        android:id="@+id/backgroundImageView"
+        android:layout_width="139dp"
+        android:layout_height="48dp"
+        android:background="@drawable/input_background"
+        android:backgroundTint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/treeImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/acme"
+        android:text="Balance:"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/backgroundImageView"
+        app:layout_constraintEnd_toEndOf="@+id/backgroundImageView"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="@+id/backgroundImageView"
+        app:layout_constraintTop_toTopOf="@+id/backgroundImageView" />
+
+    <TextView
+        android:id="@+id/balanceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/acme"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/backgroundImageView"
+        app:layout_constraintEnd_toEndOf="@+id/backgroundImageView"
+        app:layout_constraintHorizontal_bias="0.37"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toTopOf="@+id/backgroundImageView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

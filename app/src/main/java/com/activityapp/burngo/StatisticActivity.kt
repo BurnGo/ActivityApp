@@ -22,6 +22,7 @@ class StatisticActivity : AppCompatActivity() {
     private lateinit var barChart: BarChart
     private lateinit var caloriesTextView: TextView
     private lateinit var distanceTextView: TextView
+    private lateinit var stepsTextView: TextView
     private val xAxisLabel = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +33,7 @@ class StatisticActivity : AppCompatActivity() {
         barChart = findViewById(R.id.bar_chart)
         caloriesTextView = findViewById(R.id.CaloriesTextView)
         distanceTextView = findViewById(R.id.DistanceTextView)
+        stepsTextView = findViewById(R.id.StepTextView)
         setupBarChart()
         setData()
 
@@ -114,8 +116,9 @@ class StatisticActivity : AppCompatActivity() {
                 val index = e?.x?.toInt() ?: return
                 val selectedSteps = steps[index]
                 // Update TextViews with data for the selected day
-                caloriesTextView.text = "${selectedSteps * 0.05} Kcal" // Sample calculation
-                distanceTextView.text = "${selectedSteps * 0.7} Km" // Sample calculation
+                caloriesTextView.text = String.format("%.1f Kcal", (3.5*(selectedSteps/1000)*82.3)) // Sample calculation
+                distanceTextView.text = String.format("%.1f Km", ((180 * 0.85)/1000 * selectedSteps * 5)/1000)
+                stepsTextView.text = String.format("%.0f", selectedSteps)
             }
 
             override fun onNothingSelected() {
