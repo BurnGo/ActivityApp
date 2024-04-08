@@ -29,16 +29,14 @@ class RegisterActivity : AppCompatActivity() {
         confirmpword = findViewById(R.id.ConfirmPasswordInput)
         dbHelper = DBHelper(this)
 
-        val btn: TextView = findViewById(R.id.tempGoToMain)
-        btn.setOnClickListener {
-            startActivity(Intent(this@RegisterActivity, StartPageActivity::class.java))
-        }
 
         //Temporary button to go from register to maps window
         val btnMaps: TextView = findViewById(R.id.GoToMapsTemp)
         btnMaps.setOnClickListener {
             startActivity(Intent(this@RegisterActivity, MainActivity::class.java))//-----
         }
+
+
 
         val loginButton = findViewById<TextView>(R.id.LoginButton)
         loginButton.setOnClickListener {

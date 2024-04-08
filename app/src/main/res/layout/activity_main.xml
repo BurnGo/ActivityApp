@@ -66,35 +66,20 @@
         app:layout_constraintTop_toBottomOf="@+id/top_text_progress"
         app:layout_constraintVertical_bias="0.19999999" />
 
-    <Button
-        android:id="@+id/simulate_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/green"
-        android:text="Add Steps"
-        android:textColorHighlight="@color/green"
-        android:textColorLink="@color/green"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.808"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.861" />
-
     <TextView
         android:id="@+id/coin_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Coins: 0"
+        android:text="Coin Balance: 0"
         android:textColor="@color/green"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.87"
+        app:layout_constraintHorizontal_bias="0.83"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8" />
+        app:layout_constraintVertical_bias="0.84000003" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="0dp"

@@ -6,13 +6,13 @@
         android:layout_height="wrap_content"
         android:title="Settings"
         android:id="@+id/settings"
-        android:icon="@drawable/profile_icon"/>
+        android:icon="@drawable/person_icon"/>
     <item
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="Statistics"
         android:id="@+id/statistics"
-        android:icon="@drawable/statistic_icon"/>
+        android:icon="@drawable/cardiogram_icon"/>
     <item
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,5 +24,5 @@
         android:layout_height="wrap_content"
         android:title="Map"
         android:id="@+id/map"
-        android:icon="@drawable/map_icon"/>
+        android:icon="@drawable/navigation_icon"/>
 </menu>

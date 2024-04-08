@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
 
     private val NUMBER_OF_POI = 2
     private val MAX_DAILY_REWARDS = 3
-    private val REWARD_PROBABILITY_THRESHOLD = 0.8
+    private val REWARD_PROBABILITY_THRESHOLD = 0.5
     private var coinBalance = 0
     private val REWARD_MAXIMUM_RADIUS_METERS = 2000
     private val REWARD_MINIMUM_RADIUS_METERS = 300
@@ -112,15 +112,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         resetSteps()
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
 
-        //this is temporary to test progress bar
-        val simulateButton = findViewById<Button>(R.id.simulate_button)
-        simulateButton.setOnClickListener {
-            // Increment the totalSteps variable to simulate steps taken
-            totalSteps += 10f // Increment by 10 steps (adjust as needed)
-
-            // Update UI with the new step count
-            updateStepCountUI(totalSteps.toInt())
-        }
 
         val accelerometerSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         if (accelerometerSensor == null) {
@@ -173,10 +164,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
                     startActivity(Intent(this, StatisticActivity::class.java))
                     true
                 }
-//                R.id.action_settings -> {
-//                    startActivity(Intent(this, SettingsActivity::class.java))
-//                    true
-//                }
+                R.id.plant -> {
+                    startActivity(Intent(this, TreeActivity::class.java))
+                    true
+                }
                 else -> false
             }
         }
@@ -228,7 +219,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         }*/
 
     }
-
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -384,7 +374,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private fun awardCoin() {
         val coinBalanceTextView = findViewById<TextView>(R.id.coin_balance)
         coinBalance++
-        coinBalanceTextView.text = "Coins: $coinBalance"
+        coinBalanceTextView.text = "Coin Balance: $coinBalance"
     }
     private fun updateMap() {
         // Get the vector drawable resource and convert it to a bitmap
