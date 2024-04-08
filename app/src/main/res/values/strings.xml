@@ -2,5 +2,5 @@
     <string name="app_name">BurnGo</string>
 
     <string name="maps_api_key">0</string>
-    <!--        <string name="maps_api_key">AIzaSyAtPyXkP0Z3rQ7NLKU120fG2wbkzAecZWk</string>-->
+<!--            <string name="maps_api_key">AIzaSyAtPyXkP0Z3rQ7NLKU120fG2wbkzAecZWk</string>-->
 </resources>

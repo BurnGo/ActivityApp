@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
 
     private val NUMBER_OF_POI = 2
     private val MAX_DAILY_REWARDS = 3
-    private val REWARD_PROBABILITY_THRESHOLD = 0.8
+    private val REWARD_PROBABILITY_THRESHOLD = 0.5
     private var coinBalance = 0
     private val REWARD_MAXIMUM_RADIUS_METERS = 2000
     private val REWARD_MINIMUM_RADIUS_METERS = 300
