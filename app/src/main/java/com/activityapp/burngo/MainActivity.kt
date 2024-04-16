@@ -196,29 +196,30 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
 
 
         // Add markers for points of interest
-        addMarkersForPointsOfInterest()
+//        addMarkersForPointsOfInterest()
     }
 
-    private fun addMarkersForPointsOfInterest() {
-        var index = 0
-        while (index < 2){
-            googleMap.addMarker(
-                MarkerOptions()
-                    .position(pointsOfInterest[index].latLng)
-                    .title(pointsOfInterest[index].name)
-            )
-            index++
-        }
-        /*
-        pointsOfInterest.forEach { poi ->
-            googleMap.addMarker(
-                MarkerOptions()
-                    .position(poi.latLng)
-                    .title(poi.name)
-            )
-        }*/
-
-    }
+    //TODO: the the addition of POI from database should be adapted to the new logic found in generatePoints method
+//    private fun addMarkersForPointsOfInterest() {
+//        var index = 0
+//        while (index < 2){
+//            googleMap.addMarker(
+//                MarkerOptions()
+//                    .position(pointsOfInterest[index].latLng)
+//                    .title(pointsOfInterest[index].name)
+//            )
+//            index++
+//        }
+//        /*
+//        pointsOfInterest.forEach { poi ->
+//            googleMap.addMarker(
+//                MarkerOptions()
+//                    .position(poi.latLng)
+//                    .title(poi.name)
+//            )
+//        }*/
+//
+//    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
