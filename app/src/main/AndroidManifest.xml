@@ -11,7 +11,6 @@
 
     <application
         android:allowBackup="true"
-        android:usesCleartextTraffic="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -19,17 +18,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BurnGo"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".HelpActivity"
+            android:exported="false" />
+
         <receiver
             android:name=".NotificationHelper"
-            android:enabled="true"/>
+            android:enabled="true" />
+
         <activity
             android:name=".StatisticActivity"
             android:exported="false" />
         <activity
             android:name=".SettingsActivity"
             android:exported="false" />
-      <activity
+        <activity
             android:name=".TreeActivity"
             android:exported="false" />
         <activity
