@@ -180,7 +180,7 @@
         android:id="@+id/GoToMapsTemp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Go To Maps"
+        android:text="Go To Statistics"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
