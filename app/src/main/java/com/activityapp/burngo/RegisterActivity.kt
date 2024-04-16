@@ -36,6 +36,12 @@ class RegisterActivity : AppCompatActivity() {
             startActivity(Intent(this@RegisterActivity, StatisticActivity::class.java))//-----
         }
 
+        //Temporary button to go from register to statistics window
+        val Statsbtn: TextView = findViewById(R.id.btnStats)
+        Statsbtn.setOnClickListener {
+            startActivity(Intent(this@RegisterActivity, StatisticActivity::class.java))//-----
+        }
+
 
 
         val loginButton = findViewById<TextView>(R.id.LoginButton)
