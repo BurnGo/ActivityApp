@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
 
         val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
         if (stepSensor == null) {
-            Toast.makeText(this, "No step sensor detected on this device", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "No step counter sensor detected on this device", Toast.LENGTH_SHORT).show()
         } else {
             sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
         }
@@ -393,14 +393,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private fun showAllRewardsPickedUpMessage() {
         Toast.makeText(this, "Congratulations, you picked up all the daily rewards!", Toast.LENGTH_SHORT).show()
     }
-    fun navigateToSettingsActivity(view: View) {
-        // Create an intent to navigate back to the MainActivity
-        val intent = Intent(this, SettingsActivity::class.java)
-        startActivity(intent)
-        finish() // Optional: finish the SettingsActivity to remove it from the back stack
-    }
-
-
 
 }
 
