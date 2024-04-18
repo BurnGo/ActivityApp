@@ -33,7 +33,7 @@ class RegisterActivity : AppCompatActivity() {
         //Temporary button to go from register to maps window
         val btnMaps: TextView = findViewById(R.id.GoToMapsTemp)
         btnMaps.setOnClickListener {
-            startActivity(Intent(this@RegisterActivity, MainActivity::class.java))//-----
+            startActivity(Intent(this@RegisterActivity, StatisticActivity::class.java))//-----
         }
 
 
