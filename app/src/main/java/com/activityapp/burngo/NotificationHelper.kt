@@ -80,7 +80,6 @@ class NotificationHelper : BroadcastReceiver(){
 
         val notification = NotificationCompat.Builder(context, channelID)
             .setSmallIcon(R.drawable.ic_notification_overlay)
-            .setContentTitle(title)
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
