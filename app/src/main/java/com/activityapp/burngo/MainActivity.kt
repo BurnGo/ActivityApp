@@ -73,8 +73,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private var sensorManager: SensorManager? = null
     private var totalSteps = 0f
     private var previousTotalSteps = 0f
-    private val STEP_THRESHOLD = 5f
-    private var lastAcceleration = 0f
 
     private val pointsOfInterest = mutableListOf<PointOfInterest>(
         PointOfInterest("KTU Miestelis", LatLng(54.904041, 23.957961)),
@@ -112,12 +110,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         resetSteps()
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
 
-
-        val accelerometerSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-        if (accelerometerSensor == null) {
-            Toast.makeText(this, "No accelerometer sensor detected on this device", Toast.LENGTH_SHORT).show()
+        val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+        if (stepSensor == null) {
+            Toast.makeText(this, "No step counter sensor detected on this device", Toast.LENGTH_SHORT).show()
         } else {
-            sensorManager?.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_UI)
+            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
         }
         val queue = Volley.newRequestQueue(this);
         val url = "http://10.0.2.2/getPoints.php"
@@ -196,29 +193,30 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
 
 
         // Add markers for points of interest
-        addMarkersForPointsOfInterest()
+//        addMarkersForPointsOfInterest()
     }
 
-    private fun addMarkersForPointsOfInterest() {
-        var index = 0
-        while (index < 2){
-            googleMap.addMarker(
-                MarkerOptions()
-                    .position(pointsOfInterest[index].latLng)
-                    .title(pointsOfInterest[index].name)
-            )
-            index++
-        }
-        /*
-        pointsOfInterest.forEach { poi ->
-            googleMap.addMarker(
-                MarkerOptions()
-                    .position(poi.latLng)
-                    .title(poi.name)
-            )
-        }*/
-
-    }
+    //TODO: the the addition of POI from database should be adapted to the new logic found in generatePoints method
+//    private fun addMarkersForPointsOfInterest() {
+//        var index = 0
+//        while (index < 2){
+//            googleMap.addMarker(
+//                MarkerOptions()
+//                    .position(pointsOfInterest[index].latLng)
+//                    .title(pointsOfInterest[index].name)
+//            )
+//            index++
+//        }
+//        /*
+//        pointsOfInterest.forEach { poi ->
+//            googleMap.addMarker(
+//                MarkerOptions()
+//                    .position(poi.latLng)
+//                    .title(poi.name)
+//            )
+//        }*/
+//
+//    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -232,23 +230,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-        if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
-            val acceleration = calculateMagnitude(event.values)
-            val delta = acceleration - lastAcceleration
-            lastAcceleration = acceleration
-
-            if (delta > STEP_THRESHOLD) {
-                // A step is detected
-                totalSteps++
-                Log.d("Steps", "Steps added")
-                updateStepCountUI(totalSteps.toInt())
-            }
-        }
-    }
-    //helper function for step counting
-    private fun calculateMagnitude(values: FloatArray): Float {
-        // Calculate the magnitude of acceleration
-        return sqrt((values[0] * values[0] + values[1] * values[1] + values[2] * values[2]).toDouble()).toFloat()
+        totalSteps=event!!.values[0]
+        val currentSteps = totalSteps.toInt()-previousTotalSteps.toInt()
+        updateStepCountUI(currentSteps)
     }
 
     private fun updateStepCountUI(stepCount: Int) {
@@ -263,7 +247,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         topTextProgress.setOnClickListener {
             Toast.makeText(this, "Long tap to reset steps", Toast.LENGTH_SHORT).show()
         }
-        topTextProgress.setOnClickListener {
+        topTextProgress.setOnLongClickListener() {
             previousTotalSteps = totalSteps
             topTextProgress.text = 0.toString()
             saveData()
@@ -409,14 +393,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private fun showAllRewardsPickedUpMessage() {
         Toast.makeText(this, "Congratulations, you picked up all the daily rewards!", Toast.LENGTH_SHORT).show()
     }
-    fun navigateToSettingsActivity(view: View) {
-        // Create an intent to navigate back to the MainActivity
-        val intent = Intent(this, SettingsActivity::class.java)
-        startActivity(intent)
-        finish() // Optional: finish the SettingsActivity to remove it from the back stack
-    }
-
-
 
 }
 
