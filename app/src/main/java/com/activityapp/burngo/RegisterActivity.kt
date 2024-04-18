@@ -31,12 +31,15 @@ class RegisterActivity : AppCompatActivity() {
 
 
         //Temporary button to go from register to maps window
-        val btnMaps: TextView = findViewById(R.id.GoToMapsTemp)
+        val btnMaps: TextView = findViewById(R.id.GoToMapTemp)
         btnMaps.setOnClickListener {
             startActivity(Intent(this@RegisterActivity, StatisticActivity::class.java))//-----
         }
 
-
+        val btnHelp: TextView = findViewById(R.id.GoToHelpTemp)
+        btnHelp.setOnClickListener {
+            startActivity(Intent(this@RegisterActivity, HelpActivity::class.java))//-----
+        }
 
         val loginButton = findViewById<TextView>(R.id.LoginButton)
         loginButton.setOnClickListener {
