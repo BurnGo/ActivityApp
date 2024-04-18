@@ -12,6 +12,7 @@ class StartPageActivity : AppCompatActivity() {
 
     private lateinit var dbHelper: DBHelper
     private lateinit var notificationHelper: NotificationHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start_page)
@@ -31,11 +32,6 @@ class StartPageActivity : AppCompatActivity() {
             val title = "Hello"
             val message = "Thank you for trying our app!"
             notificationHelper.showNotification(this, title, message)
-
-            val title2 = "Testing"
-            val message2 = "Testing notification after 20 seconds"
-            val delayMillis = 20L * 1L // 20 seconds in milliseconds
-            notificationHelper.scheduleNotification(this, title2, message2, delayMillis)
         }
 
     }
