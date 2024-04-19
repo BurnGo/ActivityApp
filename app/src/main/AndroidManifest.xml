@@ -4,11 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -22,15 +18,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-
             android:name=".HelpActivity"
             android:exported="false" />
 
         <receiver
             android:name=".NotificationHelper"
             android:enabled="true" />
-        </activity>
-
         <activity
             android:name=".LoadingPage"
             android:exported="true">
@@ -40,15 +33,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".StatisticActivity"
             android:exported="false" />
         <activity
             android:name=".SettingsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".TreeActivity"
             android:exported="false" />
         <activity
             android:name=".StartPageActivity"
