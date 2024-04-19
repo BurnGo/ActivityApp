@@ -9,6 +9,10 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -53,7 +57,8 @@ class RegisterActivity : AppCompatActivity() {
                 val emailText = email.text.toString()
                 val pwordText = pword.text.toString()
                 val confirmpwordText = confirmpword.text.toString()
-                val saveData = dbHelper.insertData(unameText, emailText, pwordText)
+
+
 
 
 
@@ -65,26 +70,53 @@ class RegisterActivity : AppCompatActivity() {
                     Toast.makeText(this, "Missing info", Toast.LENGTH_SHORT).show()
                 } else {
                     if (pwordText.equals(confirmpwordText)) {
-
+                        dbHelper.insertData(unameText, emailText, pwordText, this)
+/*
+                        //serverRegister(unameText, emailText, pwordText)
                         if (saveData) {
                             Toast.makeText(this, "Register was successful", Toast.LENGTH_SHORT)
                                 .show()
+
                             val intent = Intent(this, LoginActivity::class.java)
                             startActivity(intent)
                         }
                         else {
 
                             Toast.makeText(this, "User already exists", Toast.LENGTH_SHORT).show()
-                        }
+                        }*/
                     } else {
                         Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
             catch (e: Exception){
-                Log.d("KURWA", e.message.toString())
+                Log.d("Register was unsuccessful", e.message.toString())
             }
         }
+    }
+
+    fun serverRegister(name: String, email: String, pass: String){
+        val queue = Volley.newRequestQueue(this)
+        val url = "http://10.0.2.2/register.php"
+
+        val params = HashMap<String, String>()
+        params["name"] = name
+        params["pass"] = pass
+        params["email"] = email
+
+        val stringRequest = object : StringRequest(Request.Method.POST, url,
+            Response.Listener { response ->
+                Toast.makeText(this, "$response", Toast.LENGTH_SHORT).show()
+            },
+            Response.ErrorListener { error ->
+                Toast.makeText(this, "$error", Toast.LENGTH_SHORT).show()
+            }) {
+            override fun getParams(): Map<String, String> {
+                return params
+            }
+        }
+
+        queue.add(stringRequest)
     }
 }
 

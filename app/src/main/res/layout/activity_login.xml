@@ -37,7 +37,7 @@
         android:drawableTint="@color/grey"
         android:ems="10"
         android:hint="Password"
-        android:inputType="text"
+        android:inputType="textPassword"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingRight="10dp"

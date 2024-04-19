@@ -2,17 +2,20 @@ package com.activityapp.burngo
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class SettingsActivity : AppCompatActivity() {
+    private lateinit var dbHelper: DBHelper
     override fun onCreate(savedInstanceState: Bundle?) {
+        dbHelper = DBHelper(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
@@ -61,6 +64,12 @@ class SettingsActivity : AppCompatActivity() {
 //                }
                 else -> false
             }
+        }
+
+        val logout = findViewById<Button>(R.id.Logout)
+        logout.setOnClickListener {
+            dbHelper.logoutUser()
+            startActivity(Intent(this, StartPageActivity::class.java))
         }
 
     }

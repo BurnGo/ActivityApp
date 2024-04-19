@@ -56,7 +56,7 @@ dependencies {
     kapt("androidx.room:room-compiler:2.6.1")
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:2.6.1")
-
+    implementation ("org.mindrot:jbcrypt:0.4")
 
 }
 

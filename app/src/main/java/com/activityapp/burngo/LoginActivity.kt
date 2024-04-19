@@ -36,11 +36,11 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Missing info", Toast.LENGTH_SHORT).show()
             }
             else{
-                val checkuser = dbHelper.checkUserpass(unameText, pwordText)
+                val checkuser = dbHelper.checkUserpass(unameText, pwordText, this)
                 if(checkuser){
                     Toast.makeText(this, "Login was successful", Toast.LENGTH_SHORT).show()
                     val id = dbHelper.getUserIdByName(unameText)
-                    dbHelper.loginUser(id, unameText)
+                    dbHelper.loginUser(id, unameText, 0.0, 0.0, 0.0, -1)
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                 }
