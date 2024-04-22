@@ -104,15 +104,30 @@
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="0dp"
         android:id="@+id/bottom_nav"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:itemIconSize="32dp"
+        app:itemIconTint="@drawable/nav_button_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav"
-        app:itemIconSize="32dp"
-        app:itemIconTint="@drawable/nav_button_background"/>
+        app:menu="@menu/bottom_nav" />
+
+    <Button
+        android:id="@+id/Logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="696dp"
+        android:backgroundTint="@color/green"
+        android:fontFamily="@font/prata"
+        android:text="Logout"
+        android:textColor="@color/white"
+        android:textColorHighlight="@color/green"
+        android:textColorLink="@color/green"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView8"
