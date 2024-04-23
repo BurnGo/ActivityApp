@@ -39,7 +39,7 @@
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topText"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintVertical_bias="0.050000012" />
 
     <EditText
         android:id="@+id/inputStepGoal"
@@ -100,7 +100,7 @@
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputStepGoal"
-        app:layout_constraintVertical_bias="0.029999971" />
+        app:layout_constraintVertical_bias="0.0" />
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -146,7 +146,7 @@
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner"
-        app:layout_constraintVertical_bias="0.050000012" />
+        app:layout_constraintVertical_bias="0.029999971" />
 
     <EditText
         android:id="@+id/iputHeight"
@@ -189,7 +189,7 @@
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iputHeight"
-        app:layout_constraintVertical_bias="0.029999971" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/inputWeight"

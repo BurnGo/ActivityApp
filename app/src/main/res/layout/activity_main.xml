@@ -8,15 +8,14 @@
     tools:context=".MainActivity">
 
     <FrameLayout
-        android:layout_width="411dp"
-        android:layout_height="655dp"
+        android:layout_width="391dp"
+        android:layout_height="611dp"
         android:layout_gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_nava"
+        app:layout_constraintBottom_toTopOf="@+id/circular_progress"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         tools:context=".MainActivity">
 
         <fragment

@@ -8,31 +8,33 @@
     android:background="@drawable/stat_page_background">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="0dp"
         android:id="@+id/bottom_nava"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:itemIconSize="32dp"
+        app:itemIconTint="@drawable/nav_button_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav"
-        app:itemIconSize="32dp"
-        app:itemIconTint="@drawable/nav_button_background"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:menu="@menu/bottom_nav" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="158dp"
-        android:layout_height="151dp"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_nava"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.22000003"
+        app:layout_constraintVertical_bias="0.19999999"
         app:srcCompat="@drawable/circle_shape" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="151dp"
-        android:layout_height="100dp"
+        android:layout_height="85dp"
         android:fontFamily="@font/acme"
         android:text="Today's statistics"
         android:textColor="@color/black"
@@ -47,17 +49,17 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="50dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView3"
         app:srcCompat="@drawable/circle_shape" />
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toStartOf="@+id/imageView4"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
@@ -66,17 +68,17 @@
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginEnd="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="45dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView3"
         app:srcCompat="@drawable/circle_shape" />
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="47dp"
-        android:layout_height="47dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="@+id/imageView2"
         app:layout_constraintStart_toStartOf="@+id/imageView2"
@@ -85,8 +87,8 @@
 
     <ImageView
         android:id="@+id/imageView7"
-        android:layout_width="47dp"
-        android:layout_height="47dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
         app:layout_constraintEnd_toEndOf="@+id/imageView4"
         app:layout_constraintStart_toStartOf="@+id/imageView4"
@@ -95,8 +97,8 @@
 
     <ImageView
         android:id="@+id/imageView8"
-        android:layout_width="47dp"
-        android:layout_height="47dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
@@ -106,7 +108,7 @@
     <TextView
         android:id="@+id/StepTextView"
         android:layout_width="110dp"
-        android:layout_height="66dp"
+        android:layout_height="55dp"
         android:layout_marginStart="15dp"
         android:fontFamily="@font/acme"
         android:text="4777"
@@ -235,15 +237,11 @@
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/bar_chart"
-        android:layout_width="match_parent"
-        android:layout_height="320dp"
-        android:layout_margin="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_nava"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

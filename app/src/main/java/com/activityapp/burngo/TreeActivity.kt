@@ -44,12 +44,13 @@ class TreeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tree)
+        //setContentView(R.layout.activity_tree_phone)
 
         treeImageView = findViewById(R.id.treeImageView)
         drawable = resources.getDrawable(R.drawable.xfirst0)
         bitmap = (drawable as BitmapDrawable).bitmap
         resizedBitmap = Bitmap.createScaledBitmap(bitmap, 250, 300, true)
-
+        //resizedBitmap = Bitmap.createScaledBitmap(bitmap, 750, 800, true)
         treeImageView.setImageBitmap(resizedBitmap)
 
         val balanceTextView = findViewById<TextView>(R.id.balanceTextView)
@@ -126,6 +127,7 @@ class TreeActivity : AppCompatActivity() {
                 drawable = resources.getDrawable(treeIterations[currentIterationIndex])
                 bitmap = (drawable as BitmapDrawable).bitmap
                 resizedBitmap = Bitmap.createScaledBitmap(bitmap, 250, 300, true)
+                //resizedBitmap = Bitmap.createScaledBitmap(bitmap, 750, 800, true)
                 Toast.makeText(this, "Plant has progressed!", Toast.LENGTH_SHORT).show()
 
                 waterCounter = 0
@@ -137,6 +139,7 @@ class TreeActivity : AppCompatActivity() {
                 drawable = resources.getDrawable(treeIterations[currentIterationIndex])
                 bitmap = (drawable as BitmapDrawable).bitmap
                 resizedBitmap = Bitmap.createScaledBitmap(bitmap, 375, 480, true)
+                //resizedBitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1100, true)
                 Toast.makeText(this, "Plant has progressed!", Toast.LENGTH_SHORT).show()
 
                 waterCounter = 0

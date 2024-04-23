@@ -18,7 +18,7 @@ class SettingsActivity : AppCompatActivity() {
         dbHelper = DBHelper(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-
+        //setContentView(R.layout.activity_settings_phone)
 
         // Set up SharedPreferences
         val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
