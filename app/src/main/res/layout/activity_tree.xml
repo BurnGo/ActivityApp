@@ -65,17 +65,15 @@
         app:itemIconTint="@drawable/nav_button_background"/>
 
     <ImageView
-        android:id="@+id/backgroundImageView"
-        android:layout_width="139dp"
-        android:layout_height="48dp"
-        android:background="@drawable/input_background"
-        android:backgroundTint="@color/white"
+        android:id="@+id/imageView5"
+        android:layout_width="350dp"
+        android:layout_height="130dp"
+        android:background="@drawable/progress_background"
         app:layout_constraintBottom_toTopOf="@+id/treeImageView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView5"
@@ -86,11 +84,12 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/backgroundImageView"
-        app:layout_constraintEnd_toEndOf="@+id/backgroundImageView"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="@+id/backgroundImageView"
-        app:layout_constraintTop_toTopOf="@+id/backgroundImageView" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+        app:layout_constraintEnd_toEndOf="@+id/imageView5"
+        app:layout_constraintHorizontal_bias="0.46"
+        app:layout_constraintStart_toStartOf="@+id/imageView5"
+        app:layout_constraintTop_toBottomOf="@+id/progress_bar_fertilizer"
+        app:layout_constraintVertical_bias="0.72" />
 
     <TextView
         android:id="@+id/balanceTextView"
@@ -101,10 +100,71 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/backgroundImageView"
-        app:layout_constraintEnd_toEndOf="@+id/backgroundImageView"
-        app:layout_constraintHorizontal_bias="0.37"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+        app:layout_constraintEnd_toEndOf="@+id/imageView5"
+        app:layout_constraintHorizontal_bias="0.06"
         app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toTopOf="@+id/backgroundImageView" />
+        app:layout_constraintTop_toBottomOf="@+id/progress_bar_fertilizer"
+        app:layout_constraintVertical_bias="0.72" />
+
+
+    <com.mackhartley.roundedprogressbar.RoundedProgressBar
+        android:id="@+id/progress_bar_water"
+        android:layout_width="250dp"
+        android:layout_height="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+        app:layout_constraintEnd_toEndOf="@+id/imageView5"
+        app:layout_constraintHorizontal_bias="0.69"
+        app:layout_constraintStart_toStartOf="@+id/imageView5"
+        app:layout_constraintTop_toTopOf="@+id/imageView5"
+        app:layout_constraintVertical_bias="0.19999999"
+        app:rpbBackgroundColor="#AEEA95"
+        app:rpbCornerRadiusBottomLeft="12dp"
+        app:rpbCornerRadiusBottomRight="12dp"
+        app:rpbCornerRadiusTopLeft="12dp"
+        app:rpbCornerRadiusTopRight="12dp"
+        app:rpbProgressColor="#67BA44"
+        app:rpbShowProgressText="false" />
+
+    <com.mackhartley.roundedprogressbar.RoundedProgressBar
+        android:id="@+id/progress_bar_fertilizer"
+        android:layout_width="250dp"
+        android:layout_height="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+        app:layout_constraintEnd_toEndOf="@+id/imageView5"
+        app:layout_constraintHorizontal_bias="0.69"
+        app:layout_constraintStart_toStartOf="@+id/imageView5"
+        app:layout_constraintTop_toTopOf="@+id/imageView5"
+        app:layout_constraintVertical_bias="0.57"
+        app:rpbBackgroundColor="#AEEA95"
+        app:rpbCornerRadiusBottomLeft="12dp"
+        app:rpbCornerRadiusBottomRight="12dp"
+        app:rpbCornerRadiusTopLeft="12dp"
+        app:rpbCornerRadiusTopRight="12dp"
+        app:rpbProgressColor="#67BA44"
+        app:rpbShowProgressText="false" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+        app:layout_constraintEnd_toStartOf="@+id/progress_bar_water"
+        app:layout_constraintStart_toStartOf="@+id/imageView5"
+        app:layout_constraintTop_toTopOf="@+id/imageView5"
+        app:layout_constraintVertical_bias="0.17000002"
+        app:srcCompat="@drawable/water" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+        app:layout_constraintEnd_toStartOf="@+id/progress_bar_fertilizer"
+        app:layout_constraintStart_toStartOf="@+id/imageView5"
+        app:layout_constraintTop_toBottomOf="@+id/imageView9"
+        app:layout_constraintVertical_bias="0.26"
+        app:srcCompat="@drawable/fertilizer" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

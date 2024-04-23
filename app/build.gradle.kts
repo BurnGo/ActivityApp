@@ -58,4 +58,5 @@ dependencies {
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:2.6.1")
     implementation ("org.mindrot:jbcrypt:0.4")
+    implementation ("com.github.MackHartley:RoundedProgressBar:3.0.0")
 }

@@ -3,6 +3,7 @@ package com.activityapp.burngo
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
@@ -28,58 +29,68 @@ class TreeActivity : AppCompatActivity() {
         R.drawable.xthird4
     )
 
+    private var balance = 200
+    private lateinit var waterProgressBar: com.mackhartley.roundedprogressbar.RoundedProgressBar
+    private var waterCounter = 0
+    private lateinit var fertilizerProgressBar: com.mackhartley.roundedprogressbar.RoundedProgressBar
     private var fertilizerCounter = 0
-    private var balance = 200 // Initial balance
+    private var currentIterationIndex = 0
+
+    private lateinit var drawable: Drawable
+    private lateinit var bitmap: Bitmap
+    private lateinit var resizedBitmap: Bitmap
+    private lateinit var treeImageView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tree)
 
-        val treeImageView = findViewById<ImageView>(R.id.treeImageView)
-        var drawable = resources.getDrawable(R.drawable.xfirst0)
-        var bitmap = (drawable as BitmapDrawable).bitmap
-        var resizedBitmap = Bitmap.createScaledBitmap(bitmap, 250, 300, true)
-        var currentIterationIndex = 0
+        treeImageView = findViewById(R.id.treeImageView)
+        drawable = resources.getDrawable(R.drawable.xfirst0)
+        bitmap = (drawable as BitmapDrawable).bitmap
+        resizedBitmap = Bitmap.createScaledBitmap(bitmap, 250, 300, true)
 
         treeImageView.setImageBitmap(resizedBitmap)
 
         val balanceTextView = findViewById<TextView>(R.id.balanceTextView)
         updateBalanceTextView(balanceTextView)
 
+        waterProgressBar = findViewById(R.id.progress_bar_water)
+        fertilizerProgressBar = findViewById(R.id.progress_bar_fertilizer)
+
         val waterImage = findViewById<ImageView>(R.id.water_image)
+        val fertilizerImage = findViewById<ImageView>(R.id.fertilizer_image)
+
         waterImage.setOnClickListener {
             if (canPurchase()) {
-                balance -= 10 // Deduct coins
+                balance -= 10
                 updateBalanceTextView(balanceTextView)
+                waterCounter++
+                val waterProgressPercentage = (waterCounter.toFloat() / 4) * 100
+                waterProgressBar.setProgressPercentage(waterProgressPercentage.toDouble())
+
+                if (waterCounter == 4 && fertilizerCounter == 4) {
+                    progressPlant()
+                }
                 Toast.makeText(this, "You watered the plant!", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "Not enough coins to purchase!", Toast.LENGTH_SHORT).show()
             }
         }
 
-        val fertilizerImage = findViewById<ImageView>(R.id.fertilizer_image)
         fertilizerImage.setOnClickListener {
             if (canPurchase()) {
-                balance -= 10 // Deduct coins
+                balance -= 10
                 updateBalanceTextView(balanceTextView)
+                fertilizerCounter++
+                val fertilizerProgressPercentage = (fertilizerCounter.toFloat() / 4) * 100
+                fertilizerProgressBar.setProgressPercentage(fertilizerProgressPercentage.toDouble())
 
-
-                if (currentIterationIndex < treeIterations.size - 1) { // Check if it's not the last iteration
-                    if (currentIterationIndex <= 3) {
-                        currentIterationIndex++
-                        drawable = resources.getDrawable(treeIterations[currentIterationIndex])
-                        bitmap = (drawable as BitmapDrawable).bitmap
-                        resizedBitmap = Bitmap.createScaledBitmap(bitmap, 250, 300, true)
-                    } else {
-                        currentIterationIndex++
-                        drawable = resources.getDrawable(treeIterations[currentIterationIndex])
-                        bitmap = (drawable as BitmapDrawable).bitmap
-                        resizedBitmap = Bitmap.createScaledBitmap(bitmap, 375, 480, true)
-                    }
-                } else {
-                    Toast.makeText(this, "Congratulations! You've reached the final iteration.", Toast.LENGTH_SHORT).show()
+                if (waterCounter == 4 && fertilizerCounter == 4) {
+                    progressPlant()
                 }
-                treeImageView.setImageBitmap(resizedBitmap)
+
+                Toast.makeText(this, "You fertilized the plant!", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "Not enough coins to purchase!", Toast.LENGTH_SHORT).show()
             }
@@ -105,8 +116,39 @@ class TreeActivity : AppCompatActivity() {
                 else -> false
             }
         }
-    }
 
+    }
+    private fun progressPlant() {
+
+        if (currentIterationIndex < treeIterations.size - 1) { // Check if it's not the last iteration
+            if (currentIterationIndex <= 3) {
+                currentIterationIndex++
+                drawable = resources.getDrawable(treeIterations[currentIterationIndex])
+                bitmap = (drawable as BitmapDrawable).bitmap
+                resizedBitmap = Bitmap.createScaledBitmap(bitmap, 250, 300, true)
+                Toast.makeText(this, "Plant has progressed!", Toast.LENGTH_SHORT).show()
+
+                waterCounter = 0
+                fertilizerCounter = 0
+                waterProgressBar.setProgressPercentage(0.0)
+                fertilizerProgressBar.setProgressPercentage(0.0)
+            } else {
+                currentIterationIndex++
+                drawable = resources.getDrawable(treeIterations[currentIterationIndex])
+                bitmap = (drawable as BitmapDrawable).bitmap
+                resizedBitmap = Bitmap.createScaledBitmap(bitmap, 375, 480, true)
+                Toast.makeText(this, "Plant has progressed!", Toast.LENGTH_SHORT).show()
+
+                waterCounter = 0
+                fertilizerCounter = 0
+                waterProgressBar.setProgressPercentage(0.0)
+                fertilizerProgressBar.setProgressPercentage(0.0)
+            }
+        } else {
+            Toast.makeText(this, "Congratulations! You've reached the final iteration.", Toast.LENGTH_SHORT).show()
+        }
+        treeImageView.setImageBitmap(resizedBitmap)
+    }
     private fun updateBalanceTextView(textView: TextView) {
         textView.text = "$balance"
     }
