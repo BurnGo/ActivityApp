@@ -29,7 +29,7 @@ class TreeActivity : AppCompatActivity() {
         R.drawable.xthird4
     )
 
-    private var balance = 200
+    private var balance = 800
     private lateinit var waterProgressBar: com.mackhartley.roundedprogressbar.RoundedProgressBar
     private var waterCounter = 0
     private lateinit var fertilizerProgressBar: com.mackhartley.roundedprogressbar.RoundedProgressBar
@@ -54,7 +54,7 @@ class TreeActivity : AppCompatActivity() {
 
         val balanceTextView = findViewById<TextView>(R.id.balanceTextView)
         updateBalanceTextView(balanceTextView)
-
+        currentIterationIndex=0
         waterProgressBar = findViewById(R.id.progress_bar_water)
         fertilizerProgressBar = findViewById(R.id.progress_bar_fertilizer)
 
