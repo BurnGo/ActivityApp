@@ -70,7 +70,7 @@ class TreeActivity : AppCompatActivity() {
                 val waterProgressPercentage = (waterCounter.toFloat() / 4) * 100
                 waterProgressBar.setProgressPercentage(waterProgressPercentage.toDouble())
 
-                if (waterCounter == 4 && fertilizerCounter == 4) {
+                if (waterCounter >= 4 && fertilizerCounter >= 4) {
                     progressPlant()
                 }
                 Toast.makeText(this, "You watered the plant!", Toast.LENGTH_SHORT).show()
@@ -87,7 +87,7 @@ class TreeActivity : AppCompatActivity() {
                 val fertilizerProgressPercentage = (fertilizerCounter.toFloat() / 4) * 100
                 fertilizerProgressBar.setProgressPercentage(fertilizerProgressPercentage.toDouble())
 
-                if (waterCounter == 4 && fertilizerCounter == 4) {
+                if (waterCounter >= 4 && fertilizerCounter >= 4) {
                     progressPlant()
                 }
 
