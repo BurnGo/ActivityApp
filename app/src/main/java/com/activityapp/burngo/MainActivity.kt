@@ -17,6 +17,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -56,11 +57,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private lateinit var dbHelper: DBHelper
 
     private val LOCATION_PERMISSION_REQUEST_CODE = 1001
+    private lateinit var currentLatLng: LatLng
     private val DEFAULT_ZOOM = 17f
     private var userMarker: Marker? = null
     private lateinit var bitmap: Bitmap
     private val markerList = mutableListOf<Marker>()
     private val rewards = mutableListOf<Reward>()
+    private var isFirstMapLoad = true
 
     private val NUMBER_OF_POI = 2
     private val MAX_DAILY_REWARDS = 3
@@ -116,6 +119,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         } else {
             sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
         }
+
+        val recenter = findViewById<ImageView>(R.id.recenterButton)
+        recenter.setOnClickListener {
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, DEFAULT_ZOOM))
+        }
+
+
         val queue = Volley.newRequestQueue(this);
         val url = "http://10.0.2.2/getPoints.php"
 
@@ -190,7 +200,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         val canvas = Canvas(bitmap)
         vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
         vectorDrawable.draw(canvas)
-
 
         // Add markers for points of interest
 //        addMarkersForPointsOfInterest()
@@ -275,10 +284,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
 
     override fun onLocationChanged(location: Location) {
         //update the users location
-        val currentLatLng = LatLng(location.latitude, location.longitude)
+        currentLatLng = LatLng(location.latitude, location.longitude)
         userMarker?.remove()
         userMarker = googleMap.addMarker(MarkerOptions().position(currentLatLng).title("Your Location").icon(BitmapDescriptorFactory.fromBitmap(bitmap)))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, DEFAULT_ZOOM))
+
+        if (isFirstMapLoad) {
+            ///fkn fix
+            Log.d("Load", "Loaded")
+            currentLatLng = LatLng(location.latitude, location.longitude)
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, DEFAULT_ZOOM))
+            isFirstMapLoad = false // Set isFirstMapLoad to false after the first map load
+        }
 
         // Generate daily rewards if not already generated
         if (rewards.isEmpty()) {
