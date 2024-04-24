@@ -84,7 +84,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         PointOfInterest("Dainu slenis", LatLng(54.894734, 23.943053)),
         PointOfInterest("Vienybes aikste", LatLng(54.899160, 23.912995))
         // Add more points of interest as needed
-
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -142,8 +141,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
                         pointsOfInterest.add(point)
 
                     }
-
-
                 }
                 catch(e: Exception){
                     Log.d("Oopsie", e.message.toString())
@@ -153,7 +150,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
                 Log.d("Negerai", error.message.toString())
             }
         )
-
         queue.add(request)
 
 
@@ -289,9 +285,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         userMarker = googleMap.addMarker(MarkerOptions().position(currentLatLng).title("Your Location").icon(BitmapDescriptorFactory.fromBitmap(bitmap)))
 
         if (isFirstMapLoad) {
-            ///fkn fix
-            Log.d("Load", "Loaded")
-            currentLatLng = LatLng(location.latitude, location.longitude)
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, DEFAULT_ZOOM))
             isFirstMapLoad = false // Set isFirstMapLoad to false after the first map load
         }
