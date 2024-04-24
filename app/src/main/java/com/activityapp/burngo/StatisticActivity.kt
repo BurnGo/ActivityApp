@@ -28,6 +28,7 @@ class StatisticActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistic)
+        //setContentView(R.layout.activity_statistic_phone)
 
         // Bar chart stuff
         barChart = findViewById(R.id.bar_chart)
@@ -81,7 +82,7 @@ class StatisticActivity : AppCompatActivity() {
     }
 
     private fun setData() {
-        val steps = floatArrayOf(1000f, 1500f, 2000f, 1800f, 2200f, 2500f, 3300f)
+        val steps = floatArrayOf(1800f, 1930f, 2000f, 1800f, 2200f, 2500f, 3300f)
         val entries = ArrayList<BarEntry>()
 
         // Calculate the current day of the week (0: Sunday, 1: Monday, ..., 6: Saturday)
@@ -109,7 +110,7 @@ class StatisticActivity : AppCompatActivity() {
         barChart.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabel)
         barChart.xAxis.textSize= 16f
         barChart.invalidate()
-        barChart.setExtraOffsets(0f,0f, 0f, 15f)
+        barChart.setExtraOffsets(0f,0f, 0f, 5f)
 
         barChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
             override fun onValueSelected(e: Entry?, h: Highlight?) {

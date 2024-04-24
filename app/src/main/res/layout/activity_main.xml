@@ -8,15 +8,15 @@
     tools:context=".MainActivity">
 
     <FrameLayout
-        android:layout_width="411dp"
-        android:layout_height="655dp"
+        android:id="@+id/frameLayout"
+        android:layout_width="391dp"
+        android:layout_height="611dp"
         android:layout_gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_nava"
+        app:layout_constraintBottom_toTopOf="@+id/circular_progress"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         tools:context=".MainActivity">
 
         <fragment
@@ -42,6 +42,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.884" />
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
+        app:layout_constraintEnd_toEndOf="@+id/frameLayout"
+        app:layout_constraintHorizontal_bias="0.98"
+        app:layout_constraintStart_toStartOf="@+id/frameLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.98"
+        app:srcCompat="@drawable/progress_background" />
+
+    <ImageView
+        android:id="@+id/recenterButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:foreground="@drawable/location_image"
+        android:foregroundTint="@color/green"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView11"
+        app:layout_constraintEnd_toEndOf="@+id/imageView11"
+        app:layout_constraintStart_toStartOf="@+id/imageView11"
+        app:layout_constraintTop_toTopOf="@+id/imageView11" />
 
     <TextView
         android:id="@+id/top_text_progress"

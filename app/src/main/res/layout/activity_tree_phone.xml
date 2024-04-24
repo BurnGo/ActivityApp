@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/treeImageView"
         android:layout_width="350dp"
-        android:layout_height="540dp"
+        android:layout_height="380dp"
         android:scaleType="center"
         app:layout_constraintBottom_toTopOf="@+id/bottom_nava"
         app:layout_constraintEnd_toEndOf="parent"
