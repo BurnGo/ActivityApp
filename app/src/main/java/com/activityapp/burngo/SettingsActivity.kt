@@ -72,6 +72,12 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent(this, StartPageActivity::class.java))
         }
 
+        val help = findViewById<Button>(R.id.helpButton)
+        help.setOnClickListener {
+            val intent = Intent(this, HelpActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
 
