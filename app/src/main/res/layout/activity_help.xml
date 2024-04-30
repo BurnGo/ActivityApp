@@ -4,23 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/start_page_background"
+    android:background="@drawable/help_page_background"
     android:orientation="vertical"
     tools:context=".HelpActivity">
 
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="405dp"
+        android:layout_width="415dp"
         android:layout_height="69dp"
-        android:background="?attr/colorPrimary"
+        android:background="@drawable/toolbar_background"
         android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="Help"
-        app:titleTextColor="@android:color/white"
+        app:title="Help page"
+        app:titleTextAppearance="@style/TextAppearance.AppCompat.Large"
+        app:titleTextColor="@android:color/black"
         tools:ignore="MissingConstraints" />
 
     <ScrollView
@@ -46,25 +48,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="5dp"
+                app:cardBackgroundColor="@color/lightgreen"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="5dp">
 
                 <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="160dp"
-                    android:layout_margin="5dp"
-                    android:background="@color/white"
-                    android:elevation="3dp"
+                    android:layout_width="140dp"
+                    android:layout_height="130dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/rounded_background"
+                    android:elevation="10dp" />
+
+                <ImageView
+                    android:layout_width="108dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="25dp"
+                    android:elevation="10dp"
                     android:src="@drawable/users_location_icon" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:fontFamily="@font/acme"
                     android:paddingLeft="176dp"
                     android:text="Shows your location on the map."
-                    android:textColor="@color/green"
+                    android:textColor="@color/black"
                     android:textSize="23sp"
                     android:textStyle="bold" />
 
@@ -75,25 +84,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="5dp"
+                app:cardBackgroundColor="@color/lightgreen"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="5dp">
 
                 <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="160dp"
-                    android:layout_margin="5dp"
-                    android:background="@color/white"
-                    android:elevation="3dp"
+                    android:layout_width="140dp"
+                    android:layout_height="130dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/rounded_background"
+                    android:elevation="10dp"
+                     />
+
+                <ImageView
+                    android:layout_width="95dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="30dp"
+                    android:elevation="10dp"
                     android:src="@drawable/poi_help" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:fontFamily="@font/acme"
                     android:paddingLeft="176dp"
-                    android:text="You need to look for these oints on the map, they can give you coins."
-                    android:textColor="@color/green"
+                    android:text="You need to look for these points on the map, they can give you coins."
+                    android:textColor="@color/black"
                     android:textSize="23sp"
                     android:textStyle="bold" />
 
@@ -104,25 +121,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="5dp"
+                app:cardBackgroundColor="@color/lightgreen"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="5dp">
 
                 <ImageView
                     android:layout_width="140dp"
-                    android:layout_height="160dp"
-                    android:layout_margin="5dp"
-                    android:background="@color/white"
-                    android:elevation="3dp"
-                    android:src="@drawable/xfirst0" />
+                    android:layout_height="130dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/rounded_background"
+                    android:elevation="10dp"
+                   />
 
+                <ImageView
+                    android:layout_width="125dp"
+                    android:layout_height="114dp"
+                    android:layout_margin="15dp"
+                    android:elevation="10dp"
+                    android:src="@drawable/xfirst0" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:fontFamily="@font/acme"
                     android:paddingLeft="176dp"
                     android:text="A first iteration tree that can be grown."
-                    android:textColor="@color/green"
+                    android:textColor="@color/black"
                     android:textSize="23sp"
                     android:textStyle="bold" />
 
@@ -133,25 +157,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="5dp"
+                app:cardBackgroundColor="@color/lightgreen"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="5dp">
 
                 <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="160dp"
-                    android:layout_margin="5dp"
-                    android:background="@color/white"
-                    android:elevation="3dp"
+                    android:layout_width="140dp"
+                    android:layout_height="130dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/rounded_background"
+                    android:elevation="10dp"
+      />
+
+                <ImageView
+                    android:layout_width="111dp"
+                    android:layout_height="98dp"
+                    android:layout_margin="26dp"
+                    android:elevation="10dp"
                     android:src="@drawable/water" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:fontFamily="@font/acme"
                     android:paddingLeft="176dp"
                     android:text="You can moisten the plant with water and grow its leaves."
-                    android:textColor="@color/green"
+                    android:textColor="@color/black"
                     android:textSize="23sp"
                     android:textStyle="bold" />
 
@@ -162,32 +194,73 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="5dp"
+                app:cardBackgroundColor="@color/lightgreen"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="5dp">
 
                 <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="160dp"
-                    android:layout_margin="5dp"
-                    android:background="@color/white"
-                    android:elevation="3dp"
+                    android:layout_width="140dp"
+                    android:layout_height="130dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/rounded_background"
+                    android:elevation="10dp" />
+
+                <ImageView
+                    android:layout_width="96dp"
+                    android:layout_height="91dp"
+                    android:layout_margin="29dp"
+                    android:elevation="10dp"
                     android:src="@drawable/fertilizer" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:fontFamily="@font/acme"
                     android:paddingLeft="176dp"
                     android:text="With fertilizer you can grow your tree to the next stage of it."
-                    android:textColor="@color/green"
+                    android:textColor="@color/black"
                     android:textSize="23sp"
                     android:textStyle="bold" />
 
 
             </androidx.cardview.widget.CardView>
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:cardBackgroundColor="@color/lightgreen"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="5dp">
 
+                <ImageView
+                    android:layout_width="140dp"
+                    android:layout_height="130dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/rounded_background"
+                    android:elevation="10dp" />
+
+                <ImageView
+                    android:layout_width="96dp"
+                    android:layout_height="91dp"
+                    android:layout_margin="30dp"
+                    android:elevation="10dp"
+                    android:src="@drawable/location_image" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/acme"
+                    android:paddingLeft="176dp"
+                    android:text="To return to your current location, press this button."
+                    android:textColor="@color/black"
+                    android:textSize="23sp"
+                    android:textStyle="bold" />
+
+
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 
