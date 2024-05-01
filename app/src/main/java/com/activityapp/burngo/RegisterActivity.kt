@@ -59,11 +59,6 @@ class RegisterActivity : AppCompatActivity() {
                 val pwordText = pword.text.toString()
                 val confirmpwordText = confirmpword.text.toString()
 
-
-
-
-
-
                 if (TextUtils.isEmpty(unameText) || TextUtils.isEmpty(emailText) || TextUtils.isEmpty(
                         pwordText
                     ) || TextUtils.isEmpty(confirmpwordText)
@@ -71,7 +66,7 @@ class RegisterActivity : AppCompatActivity() {
                     Toast.makeText(this, "Missing info", Toast.LENGTH_SHORT).show()
                 } else {
                     if (pwordText.equals(confirmpwordText)) {
-                        dbHelper.insertData(unameText, emailText, pwordText, this)
+                        dbHelper.performRegistration(unameText, emailText, pwordText, this)
 /*
                         //serverRegister(unameText, emailText, pwordText)
                         if (saveData) {

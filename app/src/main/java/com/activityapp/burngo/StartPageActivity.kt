@@ -1,12 +1,9 @@
 package com.activityapp.burngo
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.activityapp.burngo.NotificationHelper
 
 class StartPageActivity : AppCompatActivity() {
 
@@ -20,9 +17,7 @@ class StartPageActivity : AppCompatActivity() {
         dbHelper = DBHelper(this)
         notificationHelper = NotificationHelper()
 
-        dbHelper.initialDataInsertion("Small car")
-        dbHelper.initialDataInsertion("Medium car")
-        dbHelper.initialDataInsertion("Large car")
+
         val signUpButton = findViewById<TextView>(R.id.SignUpButton)
         signUpButton.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)

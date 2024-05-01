@@ -3,6 +3,7 @@ package com.activityapp.burngo
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -13,6 +14,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var uname: EditText
     private lateinit var pword: EditText
     private lateinit var dbHelper: DBHelper
+    private lateinit var session: Session
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,9 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Missing info", Toast.LENGTH_SHORT).show()
             }
             else{
+                try {
+                    dbHelper.performLogin(unameText, pwordText, this)
+                    /*
                 val checkuser = dbHelper.checkUserpass(unameText, pwordText, this)
                 if(checkuser){
                     Toast.makeText(this, "Login was successful", Toast.LENGTH_SHORT).show()
@@ -46,6 +51,10 @@ class LoginActivity : AppCompatActivity() {
                 }
                 else{
                     Toast.makeText(this, "Wrong login info", Toast.LENGTH_SHORT).show()
+                }*/
+                }
+                catch (e: Exception){
+                    Log.d("neveikia", e.toString())
                 }
             }
         }

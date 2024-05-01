@@ -6,14 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 
 class LoadingPage : AppCompatActivity() {
     private lateinit var dbHelper: DBHelper
+    private lateinit var session: Session
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loading_page)
         dbHelper = DBHelper(this)
-        val activeBool = dbHelper.checkActiveUsersCount()
+        session = Session(this)
+
         //Log.d("Maldauju", activeBool.toString())
-        if(activeBool){
-            startActivity(Intent(this, MainActivity::class.java))
+        if(session.isLoggedIn()){
+            startActivity(Intent(this, StatisticActivity::class.java))
         }
         else{
             startActivity(Intent(this, StartPageActivity::class.java))
