@@ -67,7 +67,7 @@
                     android:src="@drawable/users_location_icon" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="343dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:fontFamily="@font/acme"
@@ -104,7 +104,7 @@
                     android:src="@drawable/poi_help" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="343dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:fontFamily="@font/acme"
@@ -139,8 +139,9 @@
                     android:layout_margin="15dp"
                     android:elevation="10dp"
                     android:src="@drawable/xfirst0" />
+
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="343dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:fontFamily="@font/acme"
@@ -177,7 +178,7 @@
                     android:src="@drawable/water" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="343dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:fontFamily="@font/acme"
@@ -213,7 +214,7 @@
                     android:src="@drawable/fertilizer" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="343dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:fontFamily="@font/acme"
@@ -249,7 +250,7 @@
                     android:src="@drawable/location_image" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="343dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:fontFamily="@font/acme"
