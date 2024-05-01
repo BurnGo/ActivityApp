@@ -18,21 +18,10 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 
 class DBHelper(context: Context):SQLiteOpenHelper(context, "app.sqlite", null, 1) {
-    override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL(
-            "CREATE TABLE Transportation_types" +
-                    "(id_Transportation_types integer PRIMARY KEY AUTOINCREMENT NOT NULL ," +
-                    "name char (10) NOT NULL);"
-        )
+    lateinit var session: Session
 
-        db?.execSQL(
-            "create table Users (id_User integer PRIMARY KEY AUTOINCREMENT NOT NULL , username TEXT NOT NULL, " +
-                    "email TEXT NOT NULL, password TEXT NOT NULL, currency_balance double DEFAULT 0 NOT NULL," +
-                    "height double DEFAULT 0 NOT NULL," +
-                    "weight double DEFAULT 0 NOT NULL," +
-                    "transportation_type integer," +
-                    "FOREIGN KEY(transportation_type) REFERENCES Transportation_types (id_Transportation_types))"
-        );
+    override fun onCreate(db: SQLiteDatabase?) {
+
         db?.execSQL(
             "CREATE TABLE Steps" +
                     "(" +
@@ -62,21 +51,12 @@ class DBHelper(context: Context):SQLiteOpenHelper(context, "app.sqlite", null, 1
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db?.execSQL("drop table if exists Transportation_types");
-        db?.execSQL("drop table if exists Users");
         db?.execSQL("drop table if exists Steps");
     }
 
-    fun insertData(username: String, email: String, password: String, context: Context){
-        val db = this.writableDatabase
-        val contentValues = ContentValues()
-        contentValues.put("username", username)
-        contentValues.put("email", email)
-        val securePass = BCrypt.hashpw(password, BCrypt.gensalt())
-        contentValues.put("password", securePass)
-
+    fun performRegistration(username: String, email: String, password: String, context: Context){
         serverRegister(username, email, password, context){ isSuccess ->
             if(isSuccess){
-                db.insert("Users", null, contentValues)
                 Toast.makeText(context, "Registration was successful", Toast.LENGTH_SHORT).show()
                 val intent = Intent(context, LoginActivity::class.java)
                 context.startActivity(intent)
@@ -85,7 +65,35 @@ class DBHelper(context: Context):SQLiteOpenHelper(context, "app.sqlite", null, 1
                 Toast.makeText(context, "Registration was not successful", Toast.LENGTH_SHORT).show()
             }
         }
+    }
 
+    fun performLogin(username: String, password: String, context: Context){
+
+        serverLogin(username, password, context){ isSuccess ->
+            if(isSuccess){
+                Toast.makeText(context, "Login was successful", Toast.LENGTH_SHORT).show()
+                val intent = Intent(context, StatisticActivity::class.java)
+                context.startActivity(intent)
+            }
+            else{
+                Toast.makeText(context, "Login was not successful", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    fun performUpdateUser(name: String, balance: Double, height: Double, context: Context,
+                          weight: Double, transportation: Int){
+        serverUpdateUser(name, balance, height, context, weight, transportation){ isSuccess ->
+            Log.d("success", isSuccess.toString())
+        }
+
+    }
+
+    fun performAddSteps(stepsCount: Int, distance: Double, caloriesBurned: Int,
+                        co2_saved: Double, time: Double, userID: Int, context: Context){
+        serverAddSteps(stepsCount, distance, caloriesBurned, co2_saved, time, userID, context){ isSuccess ->
+            Log.d("success", isSuccess.toString())
+        }
     }
 
     fun addFull(username: String, email: String, password: String, balance: Double, height: Double,
@@ -211,14 +219,6 @@ class DBHelper(context: Context):SQLiteOpenHelper(context, "app.sqlite", null, 1
         return userId
     }
 
-    fun initialDataInsertion(name: String): Boolean{
-        val db = this.writableDatabase
-        val cv = ContentValues()
-        cv.put("name", name)
-        val result = db.insert("Transportation_types", null, cv)
-        db.close()
-        return result != 1L
-    }
 
 
 
@@ -257,7 +257,7 @@ class DBHelper(context: Context):SQLiteOpenHelper(context, "app.sqlite", null, 1
 
     fun serverRegister(name: String, email: String, pass: String, context: Context, callback: (Boolean) -> Unit){
         val queue = Volley.newRequestQueue(context)
-        val url = "http://10.0.2.2/register.php"
+        val url = "http://20.215.225.10/register.php"
 
         val params = HashMap<String, String>()
         params["name"] = name
@@ -293,14 +293,16 @@ class DBHelper(context: Context):SQLiteOpenHelper(context, "app.sqlite", null, 1
         //return successBool
     }
 
-    //NENAUDOTI
+
     fun serverLogin(name: String, pass: String, context: Context, callback: (Boolean) -> Unit){
         val queue = Volley.newRequestQueue(context)
-        val url = "http://10.0.2.2/login.php"
+        val url = "http://20.215.225.10/login.php"
 
         val params = HashMap<String, String>()
         params["name"] = name
         params["pass"] = pass
+
+        session = Session(context)
 
         val stringRequest = object : StringRequest(
             Request.Method.POST, url,
@@ -308,22 +310,33 @@ class DBHelper(context: Context):SQLiteOpenHelper(context, "app.sqlite", null, 1
                 val jsonObj = JSONObject(response)
                 val status = jsonObj.getString("status")
                 if(status.equals("success")){
-                    val name = jsonObj.getString("name")
-                    val email = jsonObj.getString("email")
-                    val pass = jsonObj.getString("password")
-                    val balance = jsonObj.getDouble("balance")
-                    val height = jsonObj.getDouble("height")
-                    val weight = jsonObj.getDouble("weight")
-                    val transportation = jsonObj.getInt("transportation")
-                    addFull(name, email, pass, balance, height, weight, transportation)
                     Log.d("SERVASresponse", jsonObj.getString("message"))
+                    Toast.makeText(context, jsonObj.getString("message"), Toast.LENGTH_SHORT).show()
+                    val userID = jsonObj.getInt("userID")
+                    val name = jsonObj.getString("name")
+                    val balance = jsonObj.getDouble("balance")
+                    var height = 0.0
+                    var weight = 0.0
+                    var transportation = -1
+                    if(!jsonObj.get("height").equals(null)){
+                        height = jsonObj.getDouble("height")
+                    }
+                    if(!jsonObj.get("weight").equals(null)){
+                        weight = jsonObj.getDouble("weight")
+                    }
+                    if(!jsonObj.get("transportation").equals(null)){
+                        transportation = jsonObj.getInt("transportation")
+                    }
+                    session.createSession(userID, name, balance, height, weight, transportation)
                     callback(true)
                 }
                 else if(status.equals("failure")) {
+                    Toast.makeText(context, jsonObj.getString("message"), Toast.LENGTH_SHORT).show()
                     Log.d("SERVASresponse", jsonObj.getString("message"))
                     callback(false)
                 }
                 else{
+                    Toast.makeText(context, jsonObj.getString("message"), Toast.LENGTH_SHORT).show()
                     Log.d("SERVASresponse", response)
                     callback(false)
                 }
@@ -344,6 +357,93 @@ class DBHelper(context: Context):SQLiteOpenHelper(context, "app.sqlite", null, 1
 
         queue.add(stringRequest)
         //return successBool
+    }
+
+    fun serverUpdateUser(name: String, balance: Double, height: Double, context: Context,
+                         weight: Double, transportation: Int, callback: (Boolean) -> Unit){
+
+        val queue = Volley.newRequestQueue(context)
+        val url = "http://20.215.225.10/updateUser.php"
+
+        val params = HashMap<String, String>()
+        params["name"] = name
+        params["balance"] = balance.toString()
+        params["height"] = height.toString()
+        params["weight"] = weight.toString()
+        params["transportation"] = transportation.toString()
+
+        val stringRequest = object : StringRequest(
+            Request.Method.POST, url,
+            Response.Listener { response ->
+                if(response.equals("Success")){
+                    Log.d("SERVASresponse", response.toString())
+                    callback(true)
+                }
+                else if(response.equals("Unsuccessful")) {
+                    Log.d("SERVASresponse", response.toString())
+                    callback(false)
+                }
+                else{
+                    Log.d("SERVASresponse", response.toString())
+                    callback(false)
+                }
+            },
+            Response.ErrorListener { error ->
+                callback(false)
+            })
+
+        {
+            override fun getParams(): Map<String, String> {
+                return params
+            }
+
+        }
+
+        queue.add(stringRequest)
+    }
+
+    fun serverAddSteps(stepsCount: Int, distance: Double, caloriesBurned: Int,
+        co2_saved: Double, time: Double, userID: Int, context: Context, callback: (Boolean) -> Unit){
+
+        val queue = Volley.newRequestQueue(context)
+        val url = "http://20.215.225.10/addSteps.php"
+
+        val params = HashMap<String, String>()
+        params["steps"] = stepsCount.toString()
+        params["distance"] = distance.toString()
+        params["calories"] = caloriesBurned.toString()
+        params["co2"] = co2_saved.toString()
+        params["time"] = time.toString()
+        params["userID"] = userID.toString()
+
+        val stringRequest = object : StringRequest(
+            Request.Method.POST, url,
+            Response.Listener { response ->
+                if(response.equals("Success")){
+                    Log.d("SERVASresponse", response.toString())
+                    callback(true)
+                }
+                else if(response.equals("Unsuccessful")) {
+                    Log.d("SERVASresponse", response.toString())
+                    callback(false)
+                }
+                else{
+                    Log.d("SERVASresponse", response.toString())
+                    callback(false)
+                }
+            },
+            Response.ErrorListener { error ->
+                callback(false)
+            })
+
+        {
+            override fun getParams(): Map<String, String> {
+                return params
+            }
+
+        }
+
+        queue.add(stringRequest)
     }
 
 

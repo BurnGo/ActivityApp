@@ -8,14 +8,17 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var dbHelper: DBHelper
+    private lateinit var session: Session
     override fun onCreate(savedInstanceState: Bundle?) {
         dbHelper = DBHelper(this)
+        session = Session(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         //setContentView(R.layout.activity_settings_phone)
@@ -38,6 +41,9 @@ class SettingsActivity : AppCompatActivity() {
             editor.putInt("stepGoal", newStepGoal)
             editor.apply()
         }
+
+        val details = session.getUserDetails()
+        Toast.makeText(this, details.get("username").toString(), Toast.LENGTH_SHORT).show()
 
         //get the spinner from the xml.
         val dropdown = findViewById<Spinner>(R.id.spinner)
@@ -68,7 +74,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val logout = findViewById<Button>(R.id.Logout)
         logout.setOnClickListener {
-            dbHelper.logoutUser()
+            session.logout()
             startActivity(Intent(this, StartPageActivity::class.java))
         }
 

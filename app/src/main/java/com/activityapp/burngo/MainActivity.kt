@@ -15,8 +15,6 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -47,7 +45,6 @@ import kotlin.math.sqrt
 import kotlin.random.Random
 
 
-
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListener, LocationListener  {
 
 
@@ -55,6 +52,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private lateinit var googleMap: GoogleMap
     private lateinit var progressBar: CircularProgressBar
     private lateinit var dbHelper: DBHelper
+    private lateinit var session: Session
 
     private val LOCATION_PERMISSION_REQUEST_CODE = 1001
     private lateinit var currentLatLng: LatLng
@@ -93,6 +91,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         mapFragment.getMapAsync(this)
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         dbHelper = DBHelper(this)
+        session = Session(this)
 
         //Progress bar settings
         progressBar = findViewById(R.id.circular_progress)
@@ -124,9 +123,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, DEFAULT_ZOOM))
         }
 
+        val list = session.getUserDetails()
+        val name = list.get("username")
+        Toast.makeText(this, name.toString(), Toast.LENGTH_SHORT).show()
+
 
         val queue = Volley.newRequestQueue(this);
-        val url = "http://10.0.2.2/getPoints.php"
+        val url = "http://20.215.225.10/getPoints.php"
 
 
         val request = JsonArrayRequest(Request.Method.GET, url, null,
@@ -134,7 +137,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
                 try {
                     for (i in 0 until response.length()){
                         val obj = response.getJSONObject(i)
-                        val name = obj.getString("name")
+                        val name = obj.getString("p_name")
                         val lat = obj.getDouble("latitude")
                         val lng = obj.getDouble("longitude")
                         val point = PointOfInterest(name, LatLng(lat, lng))
