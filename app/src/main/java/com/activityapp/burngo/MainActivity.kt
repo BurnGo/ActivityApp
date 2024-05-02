@@ -123,9 +123,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, DEFAULT_ZOOM))
         }
 
-        val list = session.getUserDetails()
-        val name = list.get("username")
-        Toast.makeText(this, name.toString(), Toast.LENGTH_SHORT).show()
+        //val list = session.getUserDetails()
+        //val name = list.get("username")
+        //Toast.makeText(this, name.toString(), Toast.LENGTH_SHORT).show()
 
 
         val queue = Volley.newRequestQueue(this);

@@ -42,8 +42,8 @@ class SettingsActivity : AppCompatActivity() {
             editor.apply()
         }
 
-        val details = session.getUserDetails()
-        Toast.makeText(this, details.get("username").toString(), Toast.LENGTH_SHORT).show()
+        //val details = session.getUserDetails()
+        //Toast.makeText(this, details.get("username").toString(), Toast.LENGTH_SHORT).show()
 
         //get the spinner from the xml.
         val dropdown = findViewById<Spinner>(R.id.spinner)
