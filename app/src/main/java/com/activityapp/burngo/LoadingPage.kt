@@ -15,7 +15,7 @@ class LoadingPage : AppCompatActivity() {
 
         //Log.d("Maldauju", activeBool.toString())
         if(session.isLoggedIn()){
-            startActivity(Intent(this, StatisticActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
         }
         else{
             startActivity(Intent(this, StartPageActivity::class.java))

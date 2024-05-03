@@ -69,7 +69,7 @@ class DBHelper(context: Context):SQLiteOpenHelper(context, "app.sqlite", null, 1
         serverLogin(username, password, context){ isSuccess ->
             if(isSuccess){
                 //Toast.makeText(context, "Login was successful", Toast.LENGTH_SHORT).show()
-                val intent = Intent(context, StatisticActivity::class.java)
+                val intent = Intent(context, MainActivity::class.java)
                 context.startActivity(intent)
             }
             else{
