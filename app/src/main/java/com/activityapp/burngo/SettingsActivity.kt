@@ -34,11 +34,35 @@ class SettingsActivity : AppCompatActivity() {
         val stepGoal = sharedPreferences.getInt("stepGoal", 8000)
         inputStepGoal.setText(stepGoal.toString())
 
-        // Listen for changes to the step goal input
         inputStepGoal.addTextChangedListener {
             val newStepGoal = it.toString().toIntOrNull() ?: 8000 // Default to 8000 if parsing fails
             // Save the new step goal value in SharedPreferences
             editor.putInt("stepGoal", newStepGoal)
+            editor.apply()
+        }
+
+        //this can be changed to adapt the logic of database
+        val inputHeight = findViewById<EditText>(R.id.iputHeight)
+        val height = sharedPreferences.getInt("height", 180)
+        inputHeight.setText("$height cm")
+        inputHeight.addTextChangedListener {
+            val newHeightStr = it.toString()
+            val newHeight = newHeightStr.substringBefore("cm").trim().toIntOrNull() ?: 180 // Default to 180 if parsing fails
+            // Save the new height value in SharedPreferences
+            editor.putInt("height", newHeight)
+            editor.apply()
+        }
+
+
+        //this can be changed to adapt the logic of database
+        val inputWeight = findViewById<EditText>(R.id.inputWeight)
+        val weight = sharedPreferences.getInt("weight", 80)
+        inputWeight.setText("$weight kg")
+        inputWeight.addTextChangedListener {
+            val newWeightStr = it.toString()
+            val newWeight = newWeightStr.substringBefore("kg").trim().toIntOrNull() ?: 80 // Default to 80 if parsing fails
+            // Save the new height value in SharedPreferences
+            editor.putInt("weight", newWeight)
             editor.apply()
         }
 
@@ -50,6 +74,8 @@ class SettingsActivity : AppCompatActivity() {
         val items = arrayOf("Bus", "Small economic car", "Medium sized cars", "Large SUV's or minivans", "Cars with powerfull engines")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
         dropdown.adapter = adapter
+
+
 
         //Navbar stuff
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_nav)
@@ -84,25 +110,5 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-    }
-
-
-//    fun navigateToStatisticActivity(view: View) {
-//        // Create an intent to navigate back to the MainActivity
-//        val intent = Intent(this, MainActivity::class.java)
-//        startActivity(intent)
-//        finish() // Optional: finish the SettingsActivity to remove it from the back stack
-//    }
-//    fun navigateToTreeActivity(view: View) {
-//        // Create an intent to navigate back to the MainActivity
-//        val intent = Intent(this, MainActivity::class.java)
-//        startActivity(intent)
-//        finish() // Optional: finish the SettingsActivity to remove it from the back stack
-//    }
-    fun navigateToMainActivity(view: View) {
-        // Create an intent to navigate back to the MainActivity
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish() // Optional: finish the SettingsActivity to remove it from the back stack
     }
 }

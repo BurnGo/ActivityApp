@@ -23,6 +23,7 @@ class StatisticActivity : AppCompatActivity() {
     private lateinit var caloriesTextView: TextView
     private lateinit var distanceTextView: TextView
     private lateinit var stepsTextView: TextView
+    private lateinit var CoTextView: TextView
     private val xAxisLabel = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +36,8 @@ class StatisticActivity : AppCompatActivity() {
         caloriesTextView = findViewById(R.id.CaloriesTextView)
         distanceTextView = findViewById(R.id.DistanceTextView)
         stepsTextView = findViewById(R.id.StepTextView)
+        CoTextView = findViewById(R.id.coTextView)
+
         setupBarChart()
         setData()
 
@@ -112,14 +115,22 @@ class StatisticActivity : AppCompatActivity() {
         barChart.invalidate()
         barChart.setExtraOffsets(0f,0f, 0f, 5f)
 
+        //this can be changed to adapt the logic of database
+        val sharedPreferences = getSharedPreferences("myPrefs", MODE_PRIVATE)
+        val userHeight = sharedPreferences.getInt("height", 180)
+        val userWeight = sharedPreferences.getInt("weight", 80)
+
+
         barChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
             override fun onValueSelected(e: Entry?, h: Highlight?) {
                 val index = e?.x?.toInt() ?: return
                 val selectedSteps = steps[index]
+                val distance = ((userHeight * 0.85)/1000 * selectedSteps * 5)/1000
                 // Update TextViews with data for the selected day
-                caloriesTextView.text = String.format("%.1f Kcal", (3.5*(selectedSteps/1000)*82.3)) // Sample calculation
-                distanceTextView.text = String.format("%.1f Km", ((180 * 0.85)/1000 * selectedSteps * 5)/1000)
+                caloriesTextView.text = String.format("%.1f Kcal", ((1.25*userWeight)*distance)) // Sample calculation
+                distanceTextView.text = String.format("%.1f Km", distance)
                 stepsTextView.text = String.format("%.0f", selectedSteps)
+                CoTextView.text = String.format("%.1f kg CO2", (distance*0.28785))
             }
 
             override fun onNothingSelected() {
