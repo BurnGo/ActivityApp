@@ -92,7 +92,7 @@ class StatisticActivity : AppCompatActivity() {
         val currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
 
         // Define the names of the days of the week
-        val dayNames = arrayOf("P", "A", "T", "K", "Pn", "Š", "S")
+        val dayNames = arrayOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
 
         for (i in steps.indices) {
             val dayIndex = (currentDayOfWeek + i - 1) % 7 // Calculate the index of the day of the week
