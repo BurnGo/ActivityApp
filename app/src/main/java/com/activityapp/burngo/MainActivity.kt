@@ -120,7 +120,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
 
         val recenter = findViewById<ImageView>(R.id.recenterButton)
         recenter.setOnClickListener {
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, DEFAULT_ZOOM))
+            if (!isFirstMapLoad){
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, DEFAULT_ZOOM))
+            }
         }
 
         //val list = session.getUserDetails()
