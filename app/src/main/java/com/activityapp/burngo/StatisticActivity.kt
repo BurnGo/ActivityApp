@@ -41,6 +41,13 @@ class StatisticActivity : AppCompatActivity() {
         setupBarChart()
         setData()
 
+        //TEMPORARY
+        val btnStats: TextView = findViewById(R.id.tempStats)
+        btnStats.setOnClickListener {
+            startActivity(Intent(this@StatisticActivity, PaidStatistics::class.java))
+        }
+
+
         // Navbar stuff
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_nava)
         bottomNavigation.selectedItemId = R.id.statistics
