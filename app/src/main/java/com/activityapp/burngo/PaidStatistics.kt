@@ -18,13 +18,18 @@ class PaidStatistics : AppCompatActivity() {
 
     private val co2Saved = 12
     private lateinit var barChart: AAChartView
-    private val xAxisLabel = ArrayList<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_paid_statistics)
 
         val textTrees = findViewById<TextView>(R.id.treesText)
-        textTrees.text = String.format("%.1f", (co2Saved.toFloat()/20))
+        textTrees.text = String.format("%.1f trees", (co2Saved.toFloat()/20))
+
+        val textDays = findViewById<TextView>(R.id.daysText)
+        textDays.text = String.format("%.0f days", 37.0)
+
+        val textDistance = findViewById<TextView>(R.id.distanceText)
+        textDistance.text = String.format("%.1f km", 37.7)
 
 
         val currentMonth = Calendar.getInstance().get(Calendar.MONTH) // Get the current month index
