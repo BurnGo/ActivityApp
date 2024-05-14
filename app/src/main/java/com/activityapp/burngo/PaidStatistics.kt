@@ -26,7 +26,7 @@ class PaidStatistics : AppCompatActivity() {
         textTrees.text = String.format("%.1f trees", (co2Saved.toFloat()/20))
 
         val textDays = findViewById<TextView>(R.id.daysText)
-        textDays.text = String.format("%.0f days", 37.0)
+        textDays.text = String.format("%.0f days", 20.0)
 
         val textDistance = findViewById<TextView>(R.id.distanceText)
         textDistance.text = String.format("%.1f km", 37.7)
