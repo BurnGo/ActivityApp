@@ -115,12 +115,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         if (stepSensor == null) {
             Toast.makeText(this, "No step counter sensor detected on this device", Toast.LENGTH_SHORT).show()
         } else {
-            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
+            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_NORMAL)
         }
 
         val recenter = findViewById<ImageView>(R.id.recenterButton)
         recenter.setOnClickListener {
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, DEFAULT_ZOOM))
+            if (!isFirstMapLoad){
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, DEFAULT_ZOOM))
+            }
         }
 
         //val list = session.getUserDetails()
