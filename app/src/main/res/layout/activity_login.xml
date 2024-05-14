@@ -79,21 +79,6 @@
         app:layout_constraintStart_toStartOf="@+id/LoginPasswordInput"
         app:layout_constraintTop_toBottomOf="@+id/login_text" />
 
-    <TextView
-        android:id="@+id/ForgotPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/acme"
-        android:text="Forgot Password?"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/LoginButton"
-        app:layout_constraintStart_toStartOf="@+id/LoginButton"
-        app:layout_constraintTop_toBottomOf="@+id/LoginButton"
-        app:layout_constraintVertical_bias="0.060000002" />
-
     <Button
         android:id="@+id/LoginButton"
         android:layout_width="284dp"
@@ -119,8 +104,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/LoginButton"
         app:layout_constraintStart_toStartOf="@+id/LoginButton"
-        app:layout_constraintTop_toBottomOf="@+id/ForgotPassword"
-        app:layout_constraintVertical_bias="0.050000012">
+        app:layout_constraintTop_toBottomOf="@+id/LoginButton"
+        app:layout_constraintVertical_bias="0.060000002">
 
         <TextView
             android:layout_width="wrap_content"
