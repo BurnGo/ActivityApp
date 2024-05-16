@@ -285,7 +285,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     override fun onPause() {
         super.onPause()
         //Adds steps when MainActivity loses focus
-        dbHelper.performAddSteps(50000, 100000.0, 999, 999.0, 120.0, session.getId(), this)
+        val currentSteps = totalSteps.toInt()-previousTotalSteps.toInt()
+        dbHelper.performAddSteps(currentSteps, 100000.0, 999, 999.0, 120.0, session.getId(), this)
         session.resetSteps()
 
     }
