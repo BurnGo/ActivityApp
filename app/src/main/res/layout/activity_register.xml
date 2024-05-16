@@ -176,28 +176,4 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/GoToMapTemp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go To Statistics"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.19" />
-
-    <TextView
-        android:id="@+id/GoToHelpTemp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go to help"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/GoToMapTemp" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
