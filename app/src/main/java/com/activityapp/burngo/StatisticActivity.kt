@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.widget.TextView
+import android.widget.Toast
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
@@ -23,13 +24,17 @@ class StatisticActivity : AppCompatActivity() {
     private lateinit var caloriesTextView: TextView
     private lateinit var distanceTextView: TextView
     private lateinit var stepsTextView: TextView
+    private lateinit var session: Session
     private lateinit var CoTextView: TextView
+
     private val xAxisLabel = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistic)
         //setContentView(R.layout.activity_statistic_phone)
+
+        session = Session(this)
 
         // Bar chart stuff
         barChart = findViewById(R.id.bar_chart)

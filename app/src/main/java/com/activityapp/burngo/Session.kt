@@ -25,6 +25,7 @@ class Session {
         val KEY_HEIGHT = "height"
         val KEY_WEIGHT = "weight"
         val KEY_TRANS = "transportation"
+        val KEY_STEPS = "steps"
     }
 
     fun createSession(userID: Int, username: String, currency: Double, height: Double, weight: Double, transportation: Int){
@@ -35,6 +36,7 @@ class Session {
         editor.putFloat(KEY_HEIGHT, height.toFloat())
         editor.putFloat(KEY_WEIGHT, weight.toFloat())
         editor.putInt(KEY_TRANS, transportation)
+        editor.putInt(KEY_STEPS, 0)
         editor.commit()
     }
 
@@ -65,6 +67,25 @@ class Session {
         editor.putFloat(KEY_WEIGHT, weight.toFloat())
         editor.putInt(KEY_TRANS, transportation)
         editor.commit()
+    }
+
+    fun updateStepsCount(steps: Int){
+        editor.putInt(KEY_STEPS, steps)
+        editor.commit()
+    }
+
+    fun resetSteps(){
+        editor.putInt(KEY_STEPS, 0)
+    }
+
+    fun getSteps(): Int{
+        val steps = pref.getInt(KEY_STEPS, 0)
+        return steps
+    }
+
+    fun getId(): Int{
+        val id = pref.getInt(KEY_ID, 0)
+        return id
     }
 
 

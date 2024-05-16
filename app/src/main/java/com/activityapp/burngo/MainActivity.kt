@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private lateinit var session: Session
 
     private val LOCATION_PERMISSION_REQUEST_CODE = 1001
+    private val ACTIVITY_RECOGNITION_REQUEST_CODE = 123
     private lateinit var currentLatLng: LatLng
     private val DEFAULT_ZOOM = 17f
     private var userMarker: Marker? = null
@@ -92,7 +93,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         dbHelper = DBHelper(this)
         session = Session(this)
-
         //Progress bar settings
         progressBar = findViewById(R.id.circular_progress)
         // Load user input from SharedPreferences
@@ -107,11 +107,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         bottomTextProgress.text = "/$stepGoal"
 
         //Step calculations
-        loadData()
-        resetSteps()
+        previousTotalSteps = session.getSteps().toFloat()
+        session.resetSteps()
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
 
-        val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+        val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR)
         if (stepSensor == null) {
             Toast.makeText(this, "No step counter sensor detected on this device", Toast.LENGTH_SHORT).show()
         } else {
@@ -187,8 +187,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         googleMap = map
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACTIVITY_RECOGNITION), ACTIVITY_RECOGNITION_REQUEST_CODE)
             return
         }
         startLocationUpdates()
@@ -242,6 +244,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     override fun onSensorChanged(event: SensorEvent?) {
         totalSteps=event!!.values[0]
         val currentSteps = totalSteps.toInt()-previousTotalSteps.toInt()
+        session.updateStepsCount(currentSteps)
         updateStepCountUI(currentSteps)
     }
 
@@ -277,6 +280,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         val savedNumber = sharedPreferences.getFloat("key1", 0f)
         Log.d("MainActivity", "$savedNumber")
         previousTotalSteps = savedNumber
+    }
+
+    override fun onPause() {
+        super.onPause()
+        //Adds steps when MainActivity loses focus
+        dbHelper.performAddSteps(50000, 100000.0, 999, 999.0, 120.0, session.getId(), this)
+        session.resetSteps()
+
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
