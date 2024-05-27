@@ -3,6 +3,7 @@ package com.activityapp.burngo
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.widget.TextView
 import android.widget.Toast
@@ -50,6 +51,11 @@ class StatisticActivity : AppCompatActivity() {
         val btnStats: TextView = findViewById(R.id.tempStats)
         btnStats.setOnClickListener {
             startActivity(Intent(this@StatisticActivity, PaidStatistics::class.java))
+        }
+
+        val leaderboardButton = findViewById<Button>(R.id.leaderboardButton)
+        leaderboardButton.setOnClickListener {
+            startActivity(Intent(this, Leaderboard::class.java))
         }
 
 

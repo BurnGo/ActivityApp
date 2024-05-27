@@ -8,9 +8,21 @@ import android.util.Log
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.gms.maps.model.LatLng
+import org.json.JSONArray
 import org.json.JSONObject
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+
+
+interface VolleyCallback {
+    fun onSuccessResponse(result: JSONArray?)
+}
 
 class DBHelper(context: Context):SQLiteOpenHelper(context, "app.sqlite", null, 1) {
     lateinit var session: Session
@@ -92,6 +104,8 @@ class DBHelper(context: Context):SQLiteOpenHelper(context, "app.sqlite", null, 1
             Log.d("success", isSuccess.toString())
         }
     }
+
+
 
 
     fun serverRegister(name: String, email: String, pass: String, context: Context, callback: (Boolean) -> Unit){
@@ -286,6 +300,73 @@ class DBHelper(context: Context):SQLiteOpenHelper(context, "app.sqlite", null, 1
         queue.add(stringRequest)
     }
 
+
+
+    fun getAllUsersWithSteps(context: Context, callback: (List<User>) -> Unit){
+        val queue = Volley.newRequestQueue(context);
+        val url = "http://20.215.225.10/getAllNames.php"
+
+        //var names = mutableListOf<String>()
+        //var ids = mutableListOf<Int>()
+        val users = mutableListOf<User>()
+        val request = JsonArrayRequest(Request.Method.GET, url, null,
+            { response ->
+                for (i in 0 until response.length()) {
+                    val obj = response.getJSONObject(i)
+                    val name = obj.getString("username")
+                    val id = obj.getInt("id_User")
+                    getStepsById(id, context){steps ->
+                        val user = User(id, name, steps)
+                        users.add(user)
+                    }
+                    //names.add(name)
+                    //ids.add(id)
+
+                }
+                callback(users)
+
+
+            },
+            { error ->
+                Log.d("Negerai", error.message.toString())
+            }
+        )
+        queue.add(request)
+
+    }
+
+    fun getStepsById(Id: Int, context: Context, callback: (List<Steps>) -> Unit){
+        val queue = Volley.newRequestQueue(context);
+        val url = "http://20.215.225.10/getStepsByID.php?id=${Id}"
+        val steps = mutableListOf<Steps>()
+
+        val request = JsonArrayRequest(Request.Method.GET, url, null,
+            { response ->
+                try {
+                    for (i in 0 until response.length()){
+                        val obj = response.getJSONObject(i)
+                        val step = obj.getInt("steps_count")
+                        var date = obj.getString("date")
+                        date = date.trim()
+                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                        val dateTime = LocalDate.parse(date, formatter)
+                        val stepObj = Steps(step, dateTime)
+                        steps.add(stepObj)
+
+                    }
+                    callback(steps)
+                }
+                catch(e: Exception){
+                    Log.d("Oopsie", e.message.toString())
+                }
+            },
+            { error ->
+                Log.d("Negerai", error.message.toString())
+            }
+        )
+        queue.add(request)
+    }
+
     /*
     fun checkUserpass(username: String, password: String, context: Context): Boolean {
         val db = this.readableDatabase;
@@ -448,3 +529,7 @@ class DBHelper(context: Context):SQLiteOpenHelper(context, "app.sqlite", null, 1
 
 
 }
+
+data class User(val id: Int, val name: String, val steps: List<Steps>)
+
+data class Steps(val stepsC: Int, val date: LocalDate)

@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
     private val rewards = mutableListOf<Reward>()
     private var isFirstMapLoad = true
 
+
     private val NUMBER_OF_POI = 2
     private val MAX_DAILY_REWARDS = 3
     private val REWARD_PROBABILITY_THRESHOLD = 0.5
@@ -93,6 +94,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         dbHelper = DBHelper(this)
         session = Session(this)
+
         //Progress bar settings
         progressBar = findViewById(R.id.circular_progress)
         // Load user input from SharedPreferences
