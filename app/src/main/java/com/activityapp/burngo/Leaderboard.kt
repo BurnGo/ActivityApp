@@ -1,5 +1,6 @@
 package com.activityapp.burngo
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -11,6 +12,7 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.delay
 
 class Leaderboard : AppCompatActivity() {
@@ -43,6 +45,30 @@ class Leaderboard : AppCompatActivity() {
             }
 
 
+        //Navbar stuff
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_nava)
+        bottomNavigation.selectedItemId = R.id.leaderboard
+        bottomNavigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    true
+                }
+                R.id.statistics -> {
+                    startActivity(Intent(this, StatisticActivity::class.java))
+                    true
+                }
+                R.id.map -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    true
+                }
+                R.id.plant -> {
+                    startActivity(Intent(this, TreeActivity::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
     }
     private fun processUsers(users: List<User>) {
         // Process the list of users

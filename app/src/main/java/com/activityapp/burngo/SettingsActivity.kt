@@ -28,11 +28,6 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
         //setContentView(R.layout.activity_settings_phone)
 
-
-
-
-
-
         // Set up SharedPreferences
         val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -94,6 +89,10 @@ class SettingsActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.map -> {
                     startActivity(Intent(this, MainActivity::class.java))
+                    true
+                }
+                R.id.leaderboard -> {
+                    startActivity(Intent(this, Leaderboard::class.java))
                     true
                 }
                 R.id.statistics -> {

@@ -170,6 +170,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListene
                     startActivity(Intent(this, SettingsActivity::class.java))
                     true
                 }
+                R.id.leaderboard -> {
+                    startActivity(Intent(this, Leaderboard::class.java))
+                    true
+                }
                 R.id.statistics -> {
                     startActivity(Intent(this, StatisticActivity::class.java))
                     true
