@@ -36,6 +36,7 @@ class StatisticActivity : AppCompatActivity() {
 
         session = Session(this)
 
+
         // Bar chart stuff
         barChart = findViewById(R.id.bar_chart)
         caloriesTextView = findViewById(R.id.CaloriesTextView)
