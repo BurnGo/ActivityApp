@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
+import com.github.aachartmodel.aainfographics.aachartcreator.aa_toAAOptions
 import com.github.aachartmodel.aainfographics.aaoptionsmodel.AADataLabels
 import com.github.aachartmodel.aainfographics.aaoptionsmodel.AAStyle
+import com.github.aachartmodel.aainfographics.aaoptionsmodel.AATitle
 import com.github.mikephil.charting.data.BarEntry
 import java.util.*
 
@@ -86,7 +89,7 @@ class PaidStatistics : AppCompatActivity() {
                     .data(pieData)
             ))
             .legendEnabled(false)
-            .colorsTheme(arrayOf("#347D37", "#90E28F", "#78D34D"))
+            .colorsTheme(arrayOf("#347D37", "#90E28F", "#6DBE6A"))
 
 
         pieChart = findViewById(R.id.PieChart)
