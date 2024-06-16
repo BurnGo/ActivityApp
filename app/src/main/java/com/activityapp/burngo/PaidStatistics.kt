@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
+import com.github.aachartmodel.aainfographics.aachartcreator.aa_toAAOptions
 import com.github.aachartmodel.aainfographics.aaoptionsmodel.AADataLabels
 import com.github.aachartmodel.aainfographics.aaoptionsmodel.AAStyle
+import com.github.aachartmodel.aainfographics.aaoptionsmodel.AATitle
 import com.github.mikephil.charting.data.BarEntry
 import java.util.*
 
@@ -18,6 +21,7 @@ class PaidStatistics : AppCompatActivity() {
 
     private val co2Saved = 12
     private lateinit var barChart: AAChartView
+    private lateinit var pieChart: AAChartView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_paid_statistics)
@@ -64,77 +68,31 @@ class PaidStatistics : AppCompatActivity() {
         barChart = findViewById(R.id.Newchart)
         barChart.aa_drawChartWithChartModel(aaChartModel)
 
+        //PieChart
+        setupPieChart()
     }
+    private fun setupPieChart() {
+        val pieData: Array<Any> = arrayOf(
+            arrayOf("Bus", 2.35),
+            arrayOf("Small car", 1.5),
+            arrayOf("SUV", 1.15)
+        )
+
+        val pieChartModel = AAChartModel()
+            .chartType(AAChartType.Pie)
+            .title("Types of transportation replaced")
+            .backgroundColor("#4b2b7f00")
+            .dataLabelsEnabled(true)
+            .series(arrayOf(
+                AASeriesElement()
+                    .name("Time chosen")
+                    .data(pieData)
+            ))
+            .legendEnabled(false)
+            .colorsTheme(arrayOf("#347D37", "#90E28F", "#6DBE6A"))
 
 
-//
-//    private fun setData() {
-//        val steps = floatArrayOf(20000f, 19330f, 17050f, 23000f, 18000f, 25500f, 29050f, 23010f, 15000f, 17504f, 10050f, 9004f)
-//        val entries = ArrayList<BarEntry>()
-//
-//        val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
-//
-//        val monthNames = arrayOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
-//
-//        for (i in steps.indices) {
-//            val monthIndex =
-//                (currentMonth + i) % 12
-//                //(currentMonth + i - 1) % 12 // Calculate the index of the day of the week
-//            entries.add(BarEntry(i.toFloat(), steps[i]))
-//            xAxisLabel.add(monthNames[monthIndex])
-//        }
-//
-//
-//        val barDataSet = BarDataSet(entries, "Steps")
-//        barDataSet.color = ContextCompat.getColor(this, R.color.green)
-//
-//        val data = BarData(barDataSet)
-//        barChart.data = data
-//
-//        // Set custom labels on the X-axis
-//        barChart.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabel)
-//        barChart.xAxis.textSize = 16f
-//        barChart.invalidate()
-//        barChart.setExtraOffsets(0f, 0f, 0f, 5f)
-//
-//
-//        barChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
-//            override fun onValueSelected(e: Entry?, h: Highlight?) {
-//                val index = e?.x?.toInt() ?: return
-//                val selectedSteps = steps[index]
-//
-//                // Retrieve the selected dataset
-//                val dataSet = barChart.data.getDataSetForEntry(e)
-//                if (dataSet != null) {
-//                    // Set value text size
-//                    dataSet.setValueTextSize(18f)
-//                    dataSet.setValueTypeface(Typeface.DEFAULT_BOLD)
-//
-//                    // Set value formatter to display the value of the selected column
-//                    dataSet.setValueFormatter(object : ValueFormatter() {
-//                        override fun getFormattedValue(value: Float): String {
-//                            // Only return value for the selected entry
-//                            return if (value == selectedSteps) {
-//                                String.format("%.0f", selectedSteps)
-//                            } else {
-//                                "" // Return empty string for other entries
-//                            }
-//                        }
-//                    })
-//
-//                    // Invalidate the chart to apply the changes
-//                    barChart.invalidate()
-//                }
-//            }
-//
-//            override fun onNothingSelected() {
-//                // Hide all values when nothing is selected
-//                barChart.data.dataSets.forEach { it.setValueTextSize(0f) }
-//                barChart.invalidate()
-//            }
-//        })
-//
-//
-//
-//    }
+        pieChart = findViewById(R.id.PieChart)
+        pieChart.aa_drawChartWithChartModel(pieChartModel)
+    }
 }

@@ -106,6 +106,10 @@ class TreeActivity : AppCompatActivity() {
                     startActivity(Intent(this, MainActivity::class.java))
                     true
                 }
+                R.id.leaderboard -> {
+                    startActivity(Intent(this, Leaderboard::class.java))
+                    true
+                }
                 R.id.statistics -> {
                     startActivity(Intent(this, StatisticActivity::class.java))
                     true

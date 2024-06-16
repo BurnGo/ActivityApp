@@ -302,72 +302,152 @@ class DBHelper(context: Context):SQLiteOpenHelper(context, "app.sqlite", null, 1
 
 
 
-    fun getAllUsersWithSteps(context: Context, callback: (List<User>) -> Unit){
-        val queue = Volley.newRequestQueue(context);
+//    fun getAllUsersWithSteps(context: Context, callback: (List<User>) -> Unit){
+//        val queue = Volley.newRequestQueue(context);
+//        val url = "http://20.215.225.10/getAllNames.php"
+//
+//        //var names = mutableListOf<String>()
+//        //var ids = mutableListOf<Int>()
+//        val users = mutableListOf<User>()
+//        val request = JsonArrayRequest(Request.Method.GET, url, null,
+//            { response ->
+//                for (i in 0 until response.length()) {
+//                    val obj = response.getJSONObject(i)
+//                    val name = obj.getString("username")
+//                    val id = obj.getInt("id_User")
+//                    getStepsById(id, context){steps ->
+//                        val user = User(id, name, steps)
+//                        users.add(user)
+//                        Log.d("USERIS", user.toString())
+//                    }
+//                    //names.add(name)
+//                    //ids.add(id)
+//
+//                }
+//                callback(users)
+//
+//
+//            },
+//            { error ->
+//                Log.d("Negerai", error.message.toString())
+//            }
+//        )
+//        queue.add(request)
+//
+//    }
+
+    interface UsersCallback {
+        fun onUsersRetrieved(users: List<User>)
+    }
+    fun getAllUsersWithSteps(context: Context, callback: (List<User>) -> Unit) {
+        val queue = Volley.newRequestQueue(context)
         val url = "http://20.215.225.10/getAllNames.php"
 
-        //var names = mutableListOf<String>()
-        //var ids = mutableListOf<Int>()
         val users = mutableListOf<User>()
         val request = JsonArrayRequest(Request.Method.GET, url, null,
             { response ->
-                for (i in 0 until response.length()) {
+                val totalUsers = response.length()
+                if (totalUsers == 0) {
+                    callback(users)
+                    return@JsonArrayRequest
+                }
+
+                var processedUsers = 0
+
+                for (i in 0 until totalUsers) {
                     val obj = response.getJSONObject(i)
                     val name = obj.getString("username")
                     val id = obj.getInt("id_User")
-                    getStepsById(id, context){steps ->
-                        val user = User(id, name, steps)
+
+                    getStepsById(id, context) { maxSteps ->
+                        val user = User(id, name, maxSteps)
                         users.add(user)
+                        Log.d("getAllUsersWithSteps", "User added: $user")
+
+                        processedUsers++
+                        if (processedUsers == totalUsers) {
+                            Log.d("getAllUsersWithSteps", "All users processed, invoking callback")
+                            callback(users)
+                        }
                     }
-                    //names.add(name)
-                    //ids.add(id)
-
                 }
-                callback(users)
-
-
             },
             { error ->
-                Log.d("Negerai", error.message.toString())
+                Log.d("Negerai db helperi", error.message.toString())
+                callback(emptyList()) // Ensure the callback is called even in case of an error
             }
         )
         queue.add(request)
-
     }
 
-    fun getStepsById(Id: Int, context: Context, callback: (List<Steps>) -> Unit){
-        val queue = Volley.newRequestQueue(context);
-        val url = "http://20.215.225.10/getStepsByID.php?id=${Id}"
-        val steps = mutableListOf<Steps>()
+    fun getStepsById(Id: Int, context: Context, callback: (Int) -> Unit) {
+        val queue = Volley.newRequestQueue(context)
+        val url = "http://20.215.225.10/getStepsByID.php?id=$Id"
 
         val request = JsonArrayRequest(Request.Method.GET, url, null,
             { response ->
                 try {
-                    for (i in 0 until response.length()){
+                    var maxSteps = 0
+                    for (i in 0 until response.length()) {
                         val obj = response.getJSONObject(i)
-                        val step = obj.getInt("steps_count")
-                        var date = obj.getString("date")
-                        date = date.trim()
-                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-                        val dateTime = LocalDate.parse(date, formatter)
-                        val stepObj = Steps(step, dateTime)
-                        steps.add(stepObj)
-
+                        val stepsCount = obj.getInt("steps_count")
+                        if (stepsCount > maxSteps) {
+                            maxSteps = stepsCount
+                        }
                     }
-                    callback(steps)
-                }
-                catch(e: Exception){
-                    Log.d("Oopsie", e.message.toString())
+                    //Log.d("getStepsById", "User ID: $Id, Max Steps: $maxSteps")
+                    callback(maxSteps)
+                } catch (e: Exception) {
+                    Log.e("getStepsById", "Error: ${e.message}")
+                    callback(0) // Return 0 steps on error
                 }
             },
             { error ->
-                Log.d("Negerai", error.message.toString())
+                Log.e("getStepsById", "Error: ${error.message}")
+                callback(0) // Return 0 steps on error
             }
         )
         queue.add(request)
     }
+
+
+
+//    fun getStepsById(Id: Int, context: Context, callback: (List<Steps>) -> Unit){
+//        val queue = Volley.newRequestQueue(context);
+//        val url = "http://20.215.225.10/getStepsByID.php?id=${Id}"
+//        val steps = mutableListOf<Steps>()
+//
+//        val request = JsonArrayRequest(Request.Method.GET, url, null,
+//            { response ->
+//                try {
+//                    for (i in 0 until response.length()){
+//                        val obj = response.getJSONObject(i)
+//                        val step = obj.getInt("steps_count")
+//                        var date = obj.getString("date")
+//                        date = date.trim()
+//                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+//                        val dateTime = LocalDate.parse(date, formatter)
+//                        val stepObj = Steps(step, dateTime)
+//                        steps.add(stepObj)
+//                        Log.d("Gauti zingsniai", stepObj.toString())
+//
+//                    }
+//                    callback(steps)
+//                }
+//                catch(e: Exception){
+//                    Log.d("Oopsie", e.message.toString())
+//                }
+//            },
+//            { error ->
+//                Log.d("Negerai getStepsById", error.message.toString())
+//            }
+//        )
+//        queue.add(request)
+//    }
 }
 
-data class User(val id: Int, val name: String, val steps: List<Steps>)
+//data class User(val id: Int, val name: String, val steps: List<Steps>)
+
+data class User(val id: Int, val name: String, val steps: Int)
 
 data class Steps(val stepsC: Int, val date: LocalDate)

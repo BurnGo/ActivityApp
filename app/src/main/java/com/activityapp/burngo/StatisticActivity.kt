@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.Button
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.widget.TextView
-import android.widget.Toast
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
@@ -37,6 +36,7 @@ class StatisticActivity : AppCompatActivity() {
 
         session = Session(this)
 
+
         // Bar chart stuff
         barChart = findViewById(R.id.bar_chart)
         caloriesTextView = findViewById(R.id.CaloriesTextView)
@@ -48,14 +48,9 @@ class StatisticActivity : AppCompatActivity() {
         setData()
 
         //TEMPORARY
-        val btnStats: TextView = findViewById(R.id.tempStats)
-        btnStats.setOnClickListener {
-            startActivity(Intent(this@StatisticActivity, PaidStatistics::class.java))
-        }
-
-        val leaderboardButton = findViewById<Button>(R.id.leaderboardButton)
-        leaderboardButton.setOnClickListener {
-            startActivity(Intent(this, Leaderboard::class.java))
+        val paidStatisticsButton = findViewById<Button>(R.id.PaidButton)
+        paidStatisticsButton.setOnClickListener {
+            startActivity(Intent(this, PaidStatistics::class.java))
         }
 
 
@@ -66,6 +61,10 @@ class StatisticActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.map -> {
                     startActivity(Intent(this, MainActivity::class.java))
+                    true
+                }
+                R.id.leaderboard -> {
+                    startActivity(Intent(this, Leaderboard::class.java))
                     true
                 }
                 R.id.plant -> {
